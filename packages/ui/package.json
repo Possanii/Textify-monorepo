@@ -5,7 +5,9 @@
   "exports": {
     "./button": "./src/button.tsx",
     "./card": "./src/card.tsx",
-    "./code": "./src/code.tsx"
+    "./code": "./src/code.tsx",
+    "./tailwind": "./src/tailwind.config.js",
+    "./postcss": "./src/postcss.config.js"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",

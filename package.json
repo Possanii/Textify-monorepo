@@ -10,11 +10,12 @@
   "devDependencies": {
     "@repo/eslint-config": "*",
     "@repo/typescript-config": "*",
+    "@repo/ui": "*",
     "prettier": "^3.2.5",
     "turbo": "latest"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=20.6.x"
   },
   "packageManager": "yarn@1.22.22",
   "workspaces": [
