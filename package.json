@@ -10,7 +10,6 @@
   "devDependencies": {
     "@repo/eslint-config": "*",
     "@repo/typescript-config": "*",
-    "@repo/ui": "*",
     "prettier": "^3.2.5",
     "turbo": "latest"
   },
