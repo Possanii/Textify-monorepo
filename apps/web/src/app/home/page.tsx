@@ -7,8 +7,8 @@ import { toast } from "sonner";
 export default function Home() {
   return (
     <div>
-      <span>Hello</span>
-      <Button onClick={() => toast("Gozeiiiiiiiiiiiiii")}>Click here</Button>
+      <span className="bg-red-500">Hello</span>
+      <Button onClick={() => toast("Toast")}>Click here</Button>
       <Input placeholder="oi" />
     </div>
   );
