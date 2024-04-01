@@ -1,4 +1,3 @@
-// components/LoginButton.js
 import React from 'react';
 
 const LoginButton = ({ text }) => {

@@ -1,23 +1,23 @@
 import React from "react";
-import Logo from "../login/Logo_with_black_text.png";
-import Input from "../components/InputCadastro";
+import Logo from "../../../public/Logo_with_black_text.png";
+import InputCadastro from "../components/InputCadastro";
 import Button from "../components/CadastroButton";
 
 const Cadastro = () => {
   return (
-    <div className="bg-gray-100 min-h-screen flex p-4 items-center justify-center">
-      <div className="max-w-md mx-auto bg-white p-8 w-full shadow-md">
+    <div className="bg-slate-100 min-h-screen flex p-4 items-center justify-center bg-gradient-to-br from-green-400">
+      <div className="max-w-md mx-auto bg-white border border-black p-8 w-full shadow-xl backdrop-blur-sm  ">
      
       <img src={Logo.src} alt="Textify Logo" className="mx-auto mb-6" />
 
-      <Input
+      <InputCadastro
         label="Email"
         id="email"
         name="email"
         placeholder="Insira seu endereço de email"
         required
       />
-      <Input
+      <InputCadastro
         label="Senha"
         id="password"
         name="password"
@@ -25,7 +25,7 @@ const Cadastro = () => {
         type="password"
         required
       />
-      <Input
+      <InputCadastro
         label="Repita a senha"
         id="confirmPassword"
         name="confirmPassword"
