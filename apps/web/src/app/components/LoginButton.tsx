@@ -1,14 +1,21 @@
-import React from 'react';
+import React from "react";
+interface IButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>{
+  text: string;
+}
 
-const LoginButton = ({ text }) => {
+const Button = React.forwardRef<HTMLButtonElement, IButtonProps>(
+  ({ text, ...props }, ref) => {
   return (
     <button
-      type="submit"
+      {...props}
+      ref={ref}
       className="w-full bg-black text-white py-2 rounded-md font-semibold focus:outline-none focus:ring-2 focus:ring-black focus:ring-opacity-50 hover:bg-green-600"
     >
       {text}
     </button>
   );
-};
+}
+)
 
-export default LoginButton;
+export default Button;
