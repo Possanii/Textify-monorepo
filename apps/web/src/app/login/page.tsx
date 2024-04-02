@@ -1,11 +1,16 @@
 "use client";
-import React from "react";
+import { useForm } from "react-hook-form";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import Logo from "../../../public/Logo_with_black_text.png";
 import InputLogin from "../components/InputLogin";
 import LoginButton from "../components/LoginButton";
+import { useLoginController } from "./useLoginController";
 
 export default function Login() {
+  const { register, handleSubmit, errors } = useLoginController();
+  console.log(errors);
+
   return (
     <motion.div
       // initial={{ opacity: 0, y: 50 }}
@@ -23,22 +28,23 @@ export default function Login() {
           className="mx-auto mb-6"
         />
 
-        <form action="/login" method="post">
+        <form onSubmit={handleSubmit}>
           <InputLogin
             label="Email"
-            type="email"
-            name="email"
             placeholder="Insira seu email"
             required
+            {...register("email")}
+            error={errors.email?.message}
           />
           <InputLogin
             label="Senha"
             type="password"
-            name="password"
             placeholder="Insira sua senha"
             required
+            {...register("password")}
+            error={errors.password?.message}
           />
-          <LoginButton text="Login" />
+          <LoginButton text="Login" type="submit" />
 
           <div className="text-center py-3">
             <p className="text-black w-full px-4 py-2 mb-4 rounded">
