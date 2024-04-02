@@ -5,6 +5,7 @@ import { UpdateUserService } from "../services/UpdateUserService";
 import { UserNotFound } from "../Exceptions/UserExceptions";
 
 const schema = z.object({
+    id: z.string().min(1),
     name: z.string().min(4),
     email: z.string().email(),
     password: z.string().min(6)

@@ -1,30 +1,20 @@
 import { IUser } from "../interfaces/IUser";
-import { prismaClient } from "../utils/prismaClient";
 import { UserNotFound } from "../Exceptions/UserExceptions";
+import { userModel } from "../../../schemas/userSchema";
 
 
 export class UpdateUserService {
     async execute(data: IUser): Promise<{message: string}> {
         console.log("Rota foi chamada!");
         
-        const findUser = await prismaClient.user.findFirst({
-            where:{
-                id: data.id
-            }
-        })
+        const findUser = await userModel.findById(data.id)
 
         if(!findUser){
             throw new UserNotFound()
         }
 
-        const user = await prismaClient.user.update({
-            where: {
-                id: data.id!
-            }, data:{
-                name: data.name,
-                email: data.email,
-                password: data.password
-            }
+        const user = await userModel.findByIdAndUpdate(data.id, {
+            name:data.name, email: data.email, password:data.password
         });
 
         return  {message: "Atualizado com sucesso!"}
