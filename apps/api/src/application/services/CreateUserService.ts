@@ -1,4 +1,5 @@
 import { userModel } from "../../../schemas/userSchema";
+import { EmailAlreadyExists } from "../Exceptions/UserExceptions";
 import { IUser } from "../interfaces/IUser";
 
 
@@ -7,6 +8,14 @@ export class CreateUserService{
 
         console.log("Rota foi chamada!")
         
+      const findEmail = await userModel.findOne({
+        email: data.email
+      })
+
+      if(findEmail){
+        throw new EmailAlreadyExists();
+      }
+
         const user = await userModel.create({
           name: data.name,
           email: data.email,

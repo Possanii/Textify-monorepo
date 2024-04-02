@@ -1,4 +1,5 @@
 import z, { ZodError } from "zod";
+import { EmailAlreadyExists } from "../Exceptions/UserExceptions";
 import { IController, IResponse } from "../interfaces/IController";
 import { IRequest } from "../interfaces/IRequest";
 import { CreateUserService } from "../services/CreateUserService";
@@ -26,6 +27,14 @@ export class CreateUserController implements IController{
                 return {
                     body:err,
                     statusCode:422
+                }
+            }
+            if(err instanceof EmailAlreadyExists){
+                return {
+                    statusCode: 409,
+                    body: {
+                        message: "Email já existente"
+                    }
                 }
             }
             return {
