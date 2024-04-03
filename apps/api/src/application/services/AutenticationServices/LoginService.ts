@@ -1,27 +1,29 @@
 import { userModel } from "../../../../schemas/userSchema";
-import {  InvalidPassword, UserNotFound } from "../../Exceptions/UserExceptions";
+import { InvalidPassword, UserNotFound } from "../../exceptions/UserExceptions";
 import { IUser } from "../../interfaces/IUser";
 import { bcrypt, jsonwebtoken } from "../../utils/jsonWebToken";
 
+export class LoginService {
+  async execute(data: IUser): Promise<{ message: string; token: string }> {
+    const secret = process.env.SECRET;
+    console.log("Rota foi chamada!");
 
-export class LoginService{
-    async execute(data: IUser): Promise <{message: string, token: string}>{
-        const secret = process.env.SECRET
-        console.log("Rota foi chamada!")
+    const userLogin = await userModel.findOne({
+      email: data.email,
+    });
 
-        const userLogin = await userModel.findOne({
-            email: data.email
-          })
-    
-          if(!userLogin){
-            throw new UserNotFound();
-          }
+    if (!userLogin) {
+      throw new UserNotFound();
+    }
 
-        const checkPassword = await bcrypt.compare(data.password, userLogin.password)
+    const checkPassword = await bcrypt.compare(
+      data.password,
+      userLogin.password
+    );
 
-        if(!checkPassword){
-            throw new InvalidPassword();
-        }
+    if (!checkPassword) {
+      throw new InvalidPassword();
+    }
 
         const token = jsonwebtoken.sign(
             { 
@@ -30,9 +32,9 @@ export class LoginService{
              secret,
         )
 
-        return {
-            message:"Login efetuado com sucesso!",
-            token
-        };
-    }
+    return {
+      message: "Login efetuado com sucesso!",
+      token,
+    };
+  }
 }

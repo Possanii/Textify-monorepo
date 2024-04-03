@@ -1,4 +1,6 @@
-
+import { env } from "../application/config/env";
+import "../application/utils/mongooseClient";
+import { makeLoginController } from "../factories/controller/AutenticationControllers/makeLoginController";
 import { routeAdapter } from "./adapters/routeAdapter";
 import app from "./config";
 import { makeCreateUserController } from "../factories/controller/makeCreateUserController";

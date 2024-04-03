@@ -1,18 +1,24 @@
 import { userModel } from "../../../schemas/userSchema";
-import { EmailAlreadyExists, PasswordNotEquals } from "../Exceptions/UserExceptions";
+import { EmailAlreadyExists } from "../exceptions/UserExceptions";
 import { IUser } from "../interfaces/IUser";
 import { bcrypt, jsonwebtoken } from "../utils/jsonWebToken";
 
+export class CreateUserService {
+  async execute(data: IUser): Promise<{ user: IUser }> {
+    const findEmail = await userModel.findOne({
+      email: data.email,
+    });
 
+    if (findEmail) {
+      throw new EmailAlreadyExists();
+    }
 
 export class CreateUserService{
     async execute(data: IUser): Promise<{ user: IUser, token: string}> {
         const secret = process.env.SECRET
         console.log("Rota foi chamada!")
 
-      const findEmail = await userModel.findOne({
-        email: data.email
-      })
+    await user.save();
 
       if(findEmail){
         throw new EmailAlreadyExists();
