@@ -1,6 +1,7 @@
 import { userModel } from "../../../schemas/userSchema";
 import { EmailAlreadyExists, UserNotFound } from "../exceptions/UserExceptions";
 import { IUser } from "../interfaces/IUser";
+import { bcrypt } from "../utils/jsonWebToken";
 
 export class UpdateUserService {
   async execute(data: IUser): Promise<{ message: string }> {
@@ -19,11 +20,16 @@ export class UpdateUserService {
       }
     }
 
+    const salt = await bcrypt.genSalt(12);
+    const passwordHash = await bcrypt.hash(data.password, salt);
+
     await userModel.findByIdAndUpdate(data.id, {
       name: data.name,
       email: data.email,
-      password: data.password,
+      password: passwordHash,
     });
+
+    console.log(data.password)
 
     return { message: "Atualizado com sucesso!" };
   }

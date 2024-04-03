@@ -1,54 +1,48 @@
 import { userModel } from "../../../schemas/userSchema";
-import { EmailAlreadyExists } from "../exceptions/UserExceptions";
+import { EmailAlreadyExists, PasswordNotEquals } from "../exceptions/UserExceptions";
+
 import { IUser } from "../interfaces/IUser";
 import { bcrypt, jsonwebtoken } from "../utils/jsonWebToken";
 
 export class CreateUserService {
-  async execute(data: IUser): Promise<{ user: IUser }> {
-    const findEmail = await userModel.findOne({
-      email: data.email,
-    });
+  async execute(data: IUser): Promise<{ user: IUser, token: string}> {
+    const secret = process.env.SECRET
+    console.log("Rota foi chamada!")
 
-    if (findEmail) {
+    const findEmail = await userModel.findOne({
+      email: data.email
+    })
+   
+    if(findEmail){
       throw new EmailAlreadyExists();
     }
+   
+    if(data.password !== data.confirmPassword){
+      throw new PasswordNotEquals();
+    }
 
-export class CreateUserService{
-    async execute(data: IUser): Promise<{ user: IUser, token: string}> {
-        const secret = process.env.SECRET
-        console.log("Rota foi chamada!")
+    const salt = await bcrypt.genSalt(12);
+    const passwordHash = await bcrypt.hash(data.password, salt);
+     
+    const user = await userModel.create({
+        name: data.name,
+        email: data.email,
+        password: passwordHash,
+      })
 
-    await user.save();
+      const token = jsonwebtoken.sign(
+        { 
+            id: user.id,
+         },
+         secret,
+    )
 
-      if(findEmail){
-        throw new EmailAlreadyExists();
-      }
+      await user.save();
 
-      if(data.password !== data.confirmedpassword){
-        throw new PasswordNotEquals();
-      }
-
-      const salt = await bcrypt.genSalt(12);
-      const passwordHash = await bcrypt.hash(data.password, salt);
-
-        const user = await userModel.create({
-          name: data.name,
-          email: data.email,
-          password: passwordHash,
-        })
-
-        const token = jsonwebtoken.sign(
-          { 
-              id: user.id,
-           },
-           secret,
-      )
-
-        await user.save();
-
-        return {
-          user,
-          token
-        };
-      }
+      return {
+        user,
+        token
+      };
+    }
 }
+

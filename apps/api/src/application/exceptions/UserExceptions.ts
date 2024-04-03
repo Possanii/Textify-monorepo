@@ -17,3 +17,7 @@ export class EmailMissing extends Error {
 export class InvalidPassword extends Error {
   name = "InvalidPassword";
 }
+
+export class PasswordNotEquals extends Error{
+  name = "PasswordNotEquals";
+}

@@ -3,4 +3,6 @@ export interface IUser {
   name?: string;
   email?: string;
   password?: string;
+  created_at?:Date;
+  confirmPassword?:string;
 }
