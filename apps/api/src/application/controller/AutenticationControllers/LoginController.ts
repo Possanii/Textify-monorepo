@@ -7,7 +7,6 @@ import { jsonwebtoken } from "../../utils/jsonWebToken";
 
 
 const schema = z.object({
-    id: z.string().min(1),
     email: z.string().min(4),
     password: z.string().min(6)
 })

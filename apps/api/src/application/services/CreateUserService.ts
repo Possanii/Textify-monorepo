@@ -1,13 +1,13 @@
 import { userModel } from "../../../schemas/userSchema";
 import { EmailAlreadyExists, PasswordNotEquals } from "../Exceptions/UserExceptions";
 import { IUser } from "../interfaces/IUser";
-import { bcrypt } from "../utils/jsonWebToken";
+import { bcrypt, jsonwebtoken } from "../utils/jsonWebToken";
 
 
 
 export class CreateUserService{
-    async execute(data: IUser): Promise<{ user: IUser }> {
-
+    async execute(data: IUser): Promise<{ user: IUser, token: string}> {
+        const secret = process.env.SECRET
         console.log("Rota foi chamada!")
 
       const findEmail = await userModel.findOne({
@@ -31,10 +31,18 @@ export class CreateUserService{
           password: passwordHash,
         })
 
+        const token = jsonwebtoken.sign(
+          { 
+              id: user.id,
+           },
+           secret,
+      )
+
         await user.save();
 
         return {
-          user
+          user,
+          token
         };
       }
 }

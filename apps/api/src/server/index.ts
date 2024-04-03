@@ -7,15 +7,21 @@ import { makeUpdateUserController } from "../factories/controller/makeUpdateUser
 import { env } from "../application/config/env";
 import "../application/utils/mongooseClient"
 import { makeLoginController } from "../factories/controller/AutenticationControllers/makeLoginController";
+import { checkToken } from "../application/utils/checkTokenFunction";
 
-
+// Public Routes
+app.post("/create", routeAdapter(makeCreateUserController()));
 app.post("/auth/login", routeAdapter(makeLoginController()))
 
 
-app.put("/update", routeAdapter(makeUpdateUserController()))
-app.delete("/delete", routeAdapter(makeDeleteUserController()))
-app.post("/create", routeAdapter(makeCreateUserController()));
+
+// Private Routes - Only Authenticated Users
+app.put("/update", checkToken, routeAdapter(makeUpdateUserController()))
+app.delete("/delete", checkToken, routeAdapter(makeDeleteUserController()))
+
 
 app.listen(env.API_PORT, () =>
   console.log("🔥 Server listening on port " + env.API_PORT)
 );
+
+
