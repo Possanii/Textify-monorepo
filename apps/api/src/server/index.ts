@@ -6,6 +6,11 @@ import { makeDeleteUserController } from "../factories/controller/makeDeleteUser
 import { makeUpdateUserController } from "../factories/controller/makeUpdateUserController";
 import { env } from "../application/config/env";
 import "../application/utils/mongooseClient"
+import { makeLoginController } from "../factories/controller/AutenticationControllers/makeLoginController";
+
+
+app.post("/auth/login", routeAdapter(makeLoginController()))
+
 
 app.put("/update", routeAdapter(makeUpdateUserController()))
 app.delete("/delete", routeAdapter(makeDeleteUserController()))

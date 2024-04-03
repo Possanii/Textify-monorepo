@@ -2,7 +2,7 @@ import z, { ZodError } from "zod";
 import { IController, IResponse } from "../interfaces/IController";
 import { IRequest } from "../interfaces/IRequest";
 import { UpdateUserService } from "../services/UpdateUserService";
-import { UserNotFound } from "../Exceptions/UserExceptions";
+import { EmailAlreadyExists, UserNotFound } from "../Exceptions/UserExceptions";
 
 const schema = z.object({
     id: z.string().min(1),
@@ -37,11 +37,14 @@ export class UpdateUserController implements IController{
                     }
                 }
             }
-            
-            
-
-
-
+            if(err instanceof EmailAlreadyExists){
+                return {
+                    statusCode: 409,
+                    body: {
+                        message: "Email já existente"
+                    }
+                }
+            }
             return {
                 statusCode:500,
                 body: {

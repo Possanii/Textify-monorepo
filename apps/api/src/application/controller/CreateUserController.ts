@@ -1,5 +1,5 @@
 import z, { ZodError } from "zod";
-import { EmailAlreadyExists } from "../Exceptions/UserExceptions";
+import { EmailAlreadyExists, PasswordNotEquals } from "../Exceptions/UserExceptions";
 import { IController, IResponse } from "../interfaces/IController";
 import { IRequest } from "../interfaces/IRequest";
 import { CreateUserService } from "../services/CreateUserService";
@@ -7,7 +7,8 @@ import { CreateUserService } from "../services/CreateUserService";
 const schema = z.object({ 
     name: z.string().min(4),
     email: z.string().email(),
-    password: z.string().min(6)
+    password: z.string().min(6),
+    confirmedpassword: z.string().min(6)
  })
 
 export class CreateUserController implements IController{
@@ -18,7 +19,10 @@ export class CreateUserController implements IController{
             const user = await this.createUserService.execute(data);
 
         return {
-            body:user,
+            body: {
+                message: "Usuário Criado com sucesso!",
+                user
+            },
             statusCode:200
         }
 
@@ -34,6 +38,14 @@ export class CreateUserController implements IController{
                     statusCode: 409,
                     body: {
                         message: "Email já existente"
+                    }
+                }
+            }
+            if(err instanceof PasswordNotEquals){
+                return{
+                    statusCode:422,
+                    body:{
+                        message: "Senhas não conferem!"
                     }
                 }
             }

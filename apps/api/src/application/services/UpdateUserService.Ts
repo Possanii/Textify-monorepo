@@ -1,5 +1,5 @@
 import { IUser } from "../interfaces/IUser";
-import { UserNotFound } from "../Exceptions/UserExceptions";
+import { EmailAlreadyExists, UserNotFound } from "../Exceptions/UserExceptions";
 import { userModel } from "../../../schemas/userSchema";
 
 
@@ -11,6 +11,15 @@ export class UpdateUserService {
 
         if(!findUser){
             throw new UserNotFound()
+        }
+
+        if(findUser.email !== data.email){
+            const findEmail = await userModel.findOne({
+                email: data.email
+              })
+            if(findEmail){
+                throw new EmailAlreadyExists();
+              }
         }
 
         const user = await userModel.findByIdAndUpdate(data.id, {
