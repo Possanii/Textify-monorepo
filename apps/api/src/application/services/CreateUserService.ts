@@ -1,48 +1,39 @@
+import { genSalt, hash } from "bcryptjs";
 import { userModel } from "../../../schemas/userSchema";
-import { EmailAlreadyExists, PasswordNotEquals } from "../exceptions/UserExceptions";
+import {
+  EmailAlreadyExists,
+  PasswordNotEquals,
+} from "../exceptions/UserExceptions";
 
 import { IUser } from "../interfaces/IUser";
-import { bcrypt, jsonwebtoken } from "../utils/jsonWebToken";
 
 export class CreateUserService {
-  async execute(data: IUser): Promise<{ user: IUser, token: string}> {
-    const secret = process.env.SECRET
-    console.log("Rota foi chamada!")
-
+  async execute(data: IUser): Promise<{ user: IUser }> {
     const findEmail = await userModel.findOne({
-      email: data.email
-    })
-   
-    if(findEmail){
+      email: data.email,
+    });
+
+    if (findEmail) {
       throw new EmailAlreadyExists();
     }
-   
-    if(data.password !== data.confirmPassword){
+
+    if (data.password !== data.confirmPassword) {
       throw new PasswordNotEquals();
     }
 
-    const salt = await bcrypt.genSalt(12);
-    const passwordHash = await bcrypt.hash(data.password, salt);
-     
+    const salt = await genSalt(12);
+    const passwordHash = await hash(data.password!, salt);
+
     const user = await userModel.create({
-        name: data.name,
-        email: data.email,
-        password: passwordHash,
-      })
+      name: data.name,
+      email: data.email,
+      password: passwordHash,
+    });
 
-      const token = jsonwebtoken.sign(
-        { 
-            id: user.id,
-         },
-         secret,
-    )
+    await user.save();
 
-      await user.save();
-
-      return {
-        user,
-        token
-      };
-    }
+    return {
+      user,
+    };
+  }
 }
-

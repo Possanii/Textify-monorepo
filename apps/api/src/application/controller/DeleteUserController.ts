@@ -5,18 +5,18 @@ import { IRequest } from "../interfaces/IRequest";
 import { DeleteUserService } from "../services/DeleteUserService";
 
 const schema = z.object({
-  id: z.string(),
+  id: z.string().min(3),
 });
 
 export class DeleteUserController implements IController {
   constructor(private readonly deleteUserService: DeleteUserService) {}
-  async handle({ body }: IRequest): Promise<IResponse> {
+  async handle({ user }: IRequest): Promise<IResponse> {
     try {
-      const data = schema.parse(body);
-      const user = await this.deleteUserService.execute(data);
+      const data = schema.parse(user);
+      await this.deleteUserService.execute(data);
 
       return {
-        body: user,
+        body: { message: "Deletado com sucesso!" },
         statusCode: 200,
       };
     } catch (err) {

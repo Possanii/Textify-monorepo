@@ -2,12 +2,12 @@ import z, { ZodError } from "zod";
 import { InvalidPassword, UserNotFound } from "../../exceptions/UserExceptions";
 import { IController, IResponse } from "../../interfaces/IController";
 import { IRequest } from "../../interfaces/IRequest";
-import { LoginService } from "../../services/AutenticationServices/LoginService";
+import { LoginService } from "../../services/AuthenticationServices/LoginService";
 
 const schema = z.object({
-    email: z.string().min(4),
-    password: z.string().min(6)
-})
+  email: z.string().email().min(4),
+  password: z.string().min(6),
+});
 
 export class LoginController implements IController {
   constructor(private readonly loginService: LoginService) {}

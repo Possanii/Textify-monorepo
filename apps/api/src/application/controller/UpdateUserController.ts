@@ -23,13 +23,13 @@ const schema = z
 
 export class UpdateUserController implements IController {
   constructor(private readonly updateUserService: UpdateUserService) {}
-  async handle({ body }: IRequest): Promise<IResponse> {
+  async handle({ body, user }: IRequest): Promise<IResponse> {
     try {
-      const data = schema.parse(body);
-      const user = await this.updateUserService.execute(data);
+      const data = schema.parse({ id: user!.id, ...body });
+      await this.updateUserService.execute(data);
 
       return {
-        body: user,
+        body: { message: "Atualizado com sucesso!" },
         statusCode: 200,
       };
     } catch (err) {

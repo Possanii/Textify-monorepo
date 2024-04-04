@@ -1,5 +1,5 @@
-import { LoginService } from "../../../application/services/AutenticationServices/LoginService";
+import { LoginService } from "../../../application/services/AuthenticationServices/LoginService";
 
-export function makeLoginService(){
-    return new LoginService();
+export function makeLoginService() {
+  return new LoginService();
 }

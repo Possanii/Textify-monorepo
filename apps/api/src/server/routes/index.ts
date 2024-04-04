@@ -1,1 +1,2 @@
+import "./loginRoutes";
 import "./userRoutes";
