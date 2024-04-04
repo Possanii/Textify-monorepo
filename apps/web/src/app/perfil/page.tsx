@@ -1,6 +1,4 @@
-import React from "react";
-
-const EditarPerfil = () => {
+export default function EditarPerfil() {
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col justify-center bg-gradient-to-br from-green-500">
       <div className="max-w-md w-full mx-auto border border-black">
@@ -81,6 +79,4 @@ const EditarPerfil = () => {
       </div>
     </div>
   );
-};
-
-export default EditarPerfil;
+}

@@ -1,15 +1,13 @@
 "use client";
-import { useForm } from "react-hook-form";
-import React, { useState } from "react";
+
+import { Button } from "@ui/components/ui/Button";
+import { Input } from "@ui/components/ui/Input";
 import { motion } from "framer-motion";
 import Logo from "../../../public/Logo_with_black_text.png";
-import InputLogin from "../components/InputLogin";
-import LoginButton from "../components/LoginButton";
 import { useLoginController } from "./useLoginController";
 
 export default function Login() {
   const { register, handleSubmit, errors } = useLoginController();
-  console.log(errors);
 
   return (
     <motion.div
@@ -28,36 +26,38 @@ export default function Login() {
           className="mx-auto mb-6"
         />
 
-        <form onSubmit={handleSubmit}>
-          <InputLogin
-            label="Email"
-            placeholder="Insira seu email"
-            required
-            {...register("email")}
-            error={errors.email?.message}
-          />
-          <InputLogin
-            label="Senha"
-            type="password"
-            placeholder="Insira sua senha"
-            required
-            {...register("password")}
-            error={errors.password?.message}
-          />
-          <LoginButton text="Login" type="submit" />
-
-          <div className="text-center py-3">
-            <p className="text-black w-full px-4 py-2 mb-4 rounded">
-              Não possui cadastro?{" "}
-              <a
-                href="/cadastro"
-                className="text-green-500 rounded p-1 mb-4 hover:underline"
-              >
-                Realizar cadastro
-              </a>
-            </p>
+        <form onSubmit={handleSubmit} className="w-full flex flex-col gap-8">
+          <div className="flex flex-col gap-4">
+            <Input
+              label="Email"
+              placeholder="Insira seu email"
+              required
+              {...register("email")}
+              error={errors.email?.message}
+            />
+            <Input
+              label="Senha"
+              type="password"
+              placeholder="Insira sua senha"
+              required
+              {...register("password")}
+              error={errors.password?.message}
+            />
           </div>
+          <Button type="submit">Acessar</Button>
         </form>
+
+        <div className="text-center py-3">
+          <p className="text-black w-full px-4 py-2 mb-4 rounded">
+            Não possui cadastro?{" "}
+            <a
+              href="/cadastro"
+              className="text-green-500 rounded p-1 mb-4 hover:underline"
+            >
+              Realizar cadastro
+            </a>
+          </p>
+        </div>
       </div>
     </motion.div>
   );

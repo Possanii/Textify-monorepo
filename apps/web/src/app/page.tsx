@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -18,16 +18,16 @@ const LogoAnimation = () => {
 
   useEffect(() => {
     if (isAnimationComplete) {
-      router.push('/login');
+      router.push("/login");
     }
   }, [isAnimationComplete, router]);
 
   return (
     <div className=" bg-slate-100 flex justify-center items-center h-screen border bg-gradient-to-br from-green-500">
-      <img 
-        className={`transition-transform duration-1000 ${isAnimationComplete ? '-translate-y-full' : ''}`} 
-        src={Logo.src} 
-        alt="Textify Logo" 
+      <img
+        className={`transition-transform duration-1000 ${isAnimationComplete ? "-translate-y-full" : ""}`}
+        src={Logo.src}
+        alt="Textify Logo"
       />
     </div>
   );
