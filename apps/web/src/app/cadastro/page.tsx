@@ -2,6 +2,7 @@
 
 import { Button } from "@ui/components/ui/Button";
 import { Input } from "@ui/components/ui/Input";
+import Link from "next/link";
 import Logo from "../../../public/Logo_with_black_text.png";
 import { useSignUpController } from "./useSignUpController";
 
@@ -54,9 +55,9 @@ export default function Cadastro() {
         </form>
         <p className="mt-4 text-center text-gray-600">
           Já possui uma conta?{" "}
-          <a href="/login" className="text-green-500 hover:underline">
+          <Link href="/login" className="text-green-500 hover:underline">
             Realizar login
-          </a>
+          </Link>
         </p>
       </div>
     </div>
