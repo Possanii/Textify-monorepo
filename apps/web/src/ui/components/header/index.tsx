@@ -22,9 +22,11 @@ export function Header() {
           </div>
         </div>
         <div className="flex gap-4">
-          <Button className="dark:bg-white/80 dark:hover:bg-white">
-            Carregar vídeo
-          </Button>
+          <Link href={"/upload"}>
+            <Button className="dark:bg-white/80 dark:hover:bg-white">
+              Carregar vídeo
+            </Button>
+          </Link>
           <Link href={"/perfil"}>
             <Avatar>
               <AvatarImage src="https://github.com/shadcn.png" />
