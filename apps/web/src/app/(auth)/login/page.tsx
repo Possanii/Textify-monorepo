@@ -4,7 +4,7 @@ import { Button } from "@ui/components/ui/Button";
 import { Input } from "@ui/components/ui/Input";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import Logo from "../../../public/Logo_with_black_text.png";
+import Logo from "../../../../public/Logo_with_black_text.png";
 import { useLoginController } from "./useLoginController";
 
 export default function Login() {

@@ -3,11 +3,11 @@
 import { Button } from "@ui/components/ui/Button";
 import { Input } from "@ui/components/ui/Input";
 import Link from "next/link";
-import Logo from "../../../public/Logo_with_black_text.png";
+import Logo from "../../../../public/Logo_with_black_text.png";
 import { useSignUpController } from "./useSignUpController";
 
 export default function Cadastro() {
-  const { register, handleSubmit, errors } = useSignUpController();
+  const { register, handleSubmit, errors, isLoading } = useSignUpController();
 
   return (
     <div className="bg-slate-100 min-h-screen flex p-4 items-center justify-center bg-gradient-to-br from-green-400">
@@ -51,7 +51,9 @@ export default function Cadastro() {
               error={errors.confirmPassword?.message}
             />
           </div>
-          <Button type="submit">Criar conta</Button>
+          <Button type="submit" loading={isLoading}>
+            Criar conta
+          </Button>
         </form>
         <p className="mt-4 text-center text-gray-600">
           Já possui uma conta?{" "}
