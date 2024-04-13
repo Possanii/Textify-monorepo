@@ -27,12 +27,12 @@ export class CreateUserController implements IController {
 
       await this.createUserService.execute(data);
 
-      const { token } = await this.loginService.execute(data);
+      const { accessToken } = await this.loginService.execute(data);
 
       return {
         body: {
           message: "Usuário Criado com sucesso!",
-          token,
+          accessToken,
         },
         statusCode: 200,
       };
