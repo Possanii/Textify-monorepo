@@ -2,11 +2,11 @@ import z, { ZodError } from "zod";
 import {
   EmailAlreadyExists,
   PasswordNotEquals,
-} from "../exceptions/UserExceptions";
-import { IController, IResponse } from "../interfaces/IController";
-import { IRequest } from "../interfaces/IRequest";
-import { LoginService } from "../services/AuthenticationServices/LoginService";
-import { CreateUserService } from "../services/CreateUserService";
+} from "../../exceptions/UserExceptions";
+import { IController, IResponse } from "../../interfaces/IController";
+import { IRequest } from "../../interfaces/IRequest";
+import { LoginService } from "../../services/AuthenticationServices/LoginService";
+import { CreateUserService } from "../../services/UserServices/CreateUserService";
 
 const schema = z.object({
   name: z.string().min(4),
@@ -18,21 +18,20 @@ const schema = z.object({
 export class CreateUserController implements IController {
   constructor(
     private readonly createUserService: CreateUserService,
-    private readonly loginService: LoginService
+    private readonly loginService: LoginService,
   ) {}
 
   async handle({ body }: IRequest): Promise<IResponse> {
     try {
       const data = schema.parse(body);
 
-      const user = await this.createUserService.execute(data);
+      await this.createUserService.execute(data);
 
       const { token } = await this.loginService.execute(data);
 
       return {
         body: {
           message: "Usuário Criado com sucesso!",
-          user,
           token,
         },
         statusCode: 200,

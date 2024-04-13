@@ -1,14 +1,14 @@
 import { genSalt, hash } from "bcryptjs";
-import { userModel } from "../../../schemas/userSchema";
+import { userModel } from "../../../../schemas/userSchema";
 import {
   EmailAlreadyExists,
   PasswordNotEquals,
-} from "../exceptions/UserExceptions";
+} from "../../exceptions/UserExceptions";
 
-import { IUser } from "../interfaces/IUser";
+import { IUser } from "../../interfaces/IUser";
 
 export class CreateUserService {
-  async execute(data: IUser): Promise<{ user: IUser }> {
+  async execute(data: IUser): Promise<void> {
     const findEmail = await userModel.findOne({
       email: data.email,
     });
@@ -31,9 +31,5 @@ export class CreateUserService {
     });
 
     await user.save();
-
-    return {
-      user,
-    };
   }
 }

@@ -6,7 +6,7 @@ import { InvalidPassword, UserNotFound } from "../../exceptions/UserExceptions";
 import { IUser } from "../../interfaces/IUser";
 
 export class LoginService {
-  async execute(data: IUser): Promise<{ token: string }> {
+  async execute(data: IUser): Promise<{ accessToken: string }> {
     const userLogin = await userModel.findOne({
       email: data.email,
     });
@@ -21,12 +21,12 @@ export class LoginService {
       throw new InvalidPassword();
     }
 
-    const token = sign({ sub: userLogin.id }, env.SECRET, {
+    const accessToken = sign({ sub: userLogin.id }, env.SECRET, {
       expiresIn: 60 * 60 * 24,
     }); // 24 hours
 
     return {
-      token,
+      accessToken,
     };
   }
 }

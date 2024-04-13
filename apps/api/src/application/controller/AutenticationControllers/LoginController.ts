@@ -15,11 +15,12 @@ export class LoginController implements IController {
   async handle({ body }: IRequest): Promise<IResponse> {
     try {
       const data = schema.parse(body);
-      const user = await this.loginService.execute(data);
+
+      const accessToken = await this.loginService.execute(data);
 
       return {
         body: {
-          user,
+          accessToken,
         },
         statusCode: 200,
       };

@@ -1,7 +1,10 @@
 import { genSalt, hash } from "bcryptjs";
-import { userModel } from "../../../schemas/userSchema";
-import { EmailAlreadyExists, UserNotFound } from "../exceptions/UserExceptions";
-import { IUser } from "../interfaces/IUser";
+import { userModel } from "../../../../schemas/userSchema";
+import {
+  EmailAlreadyExists,
+  UserNotFound,
+} from "../../exceptions/UserExceptions";
+import { IUser } from "../../interfaces/IUser";
 
 export class UpdateUserService {
   async execute(data: IUser): Promise<void> {

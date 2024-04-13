@@ -1,8 +1,11 @@
 import z, { ZodError } from "zod";
-import { EmailAlreadyExists, UserNotFound } from "../exceptions/UserExceptions";
-import { IController, IResponse } from "../interfaces/IController";
-import { IRequest } from "../interfaces/IRequest";
-import { UpdateUserService } from "../services/UpdateUserService";
+import {
+  EmailAlreadyExists,
+  UserNotFound,
+} from "../../exceptions/UserExceptions";
+import { IController, IResponse } from "../../interfaces/IController";
+import { IRequest } from "../../interfaces/IRequest";
+import { UpdateUserService } from "../../services/UserServices/UpdateUserService";
 
 const schema = z
   .object({
@@ -18,7 +21,7 @@ const schema = z
       }
       return true;
     },
-    { message: "Nada para atualizar" }
+    { message: "Nada para atualizar" },
   );
 
 export class UpdateUserController implements IController {

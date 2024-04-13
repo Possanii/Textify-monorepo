@@ -1,8 +1,8 @@
 import z, { ZodError } from "zod";
-import { UserNotFound } from "../exceptions/UserExceptions";
-import { IController, IResponse } from "../interfaces/IController";
-import { IRequest } from "../interfaces/IRequest";
-import { DeleteUserService } from "../services/DeleteUserService";
+import { UserNotFound } from "../../exceptions/UserExceptions";
+import { IController, IResponse } from "../../interfaces/IController";
+import { IRequest } from "../../interfaces/IRequest";
+import { DeleteUserService } from "../../services/UserServices/DeleteUserService";
 
 const schema = z.object({
   id: z.string().min(3),
