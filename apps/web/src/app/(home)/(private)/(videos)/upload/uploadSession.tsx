@@ -14,7 +14,7 @@ export function UploadSessionComponent() {
       name={"videos"}
       render={({ field: { onChange, value } }) => {
         return (
-          <div className="flex flex-col gap-10">
+          <div className="flex flex-col gap-10 border-dashed border-2 bg-slate-400">
             <Dropzone onFilesChange={onChange} videos={value as File[]} />
             {value && (
               <TableImages images={value as File[]} onFilesChange={onChange} />

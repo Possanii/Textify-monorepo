@@ -7,7 +7,7 @@ import { NavigationItems } from "./navigation";
 
 export function Header() {
   return (
-    <div className="w-full bg-zinc-900">
+    <div className="w-full fixed bg-zinc-900">
       <div className="flex justify-between items-center h-20 w-full max-w-screen-xl mx-auto">
         <div className="flex gap-10 items-center">
           <Link href={"/"}>
