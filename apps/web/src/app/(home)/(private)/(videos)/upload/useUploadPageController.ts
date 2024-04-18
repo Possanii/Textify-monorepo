@@ -13,15 +13,14 @@ const schema = z.object({
   ),
 });
 
-type formData = z.infer<typeof schema>;
+export type IUploadVideo = z.infer<typeof schema>;
 
-export function useUploadController() {
-  const { register, control } = useForm<formData>({
+export function useUploadPageController() {
+  const useFormMethods = useForm<IUploadVideo>({
     resolver: zodResolver(schema),
   });
 
   return {
-    register,
-    control,
+    useFormMethods,
   };
 }
