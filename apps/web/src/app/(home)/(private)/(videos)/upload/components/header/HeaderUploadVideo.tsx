@@ -3,7 +3,7 @@ import { Button } from "@ui/src/components/ui/Button";
 import { useHeaderUploadVideoController } from "./useHeaderUploadVideoController";
 
 export function HeaderUploadVideo() {
-  const { watch } = useHeaderUploadVideoController();
+  const { watch, reset } = useHeaderUploadVideoController();
 
   console.log(watch("videos"));
 
@@ -19,6 +19,7 @@ export function HeaderUploadVideo() {
               ? false
               : true
           }
+          onClick={() => reset()}
         >
           Limpar lista
         </Button>
