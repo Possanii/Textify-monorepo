@@ -1,6 +1,6 @@
 export default function EditarPerfil() {
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col justify-center bg-gradient-to-br from-green-500">
+    <div className="min-h-screen flex flex-col justify-center ">
       <div className="max-w-md w-full mx-auto border border-black">
         <div className="bg-white p-8 border">
           <form className="space-y-6">
@@ -55,21 +55,22 @@ export default function EditarPerfil() {
             </div>
             <div>
               <label
-                htmlFor="bio"
+                htmlFor="password"
                 className="text-sm font-medium text-gray-700"
               >
-                Biografia
+                Senha
               </label>
-              <textarea
-                id="bio"
-                name="bio"
+              <input
+                type="password"
+                id="password"
+                name="password"
                 className="mt-1 block w-full border border-black p-2 rounded-md"
-              ></textarea>
+              ></input>
             </div>
             <div>
               <button
                 type="submit"
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-black hover:bg-green-500"
+                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-400 hover:bg-green-500"
               >
                 Atualizar Perfil
               </button>
