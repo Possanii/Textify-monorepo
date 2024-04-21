@@ -7,6 +7,7 @@ export function routeAdapter(controller: IController) {
       body: request.body,
       headers: request.headers as Record<string, string>,
       params: request.params,
+      files: request.files,
       user: request.metadata?.user,
     });
 
