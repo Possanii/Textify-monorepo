@@ -1,8 +1,8 @@
 "use client";
 
 import { FormProvider } from "react-hook-form";
-import { UploadSessionComponent } from "./components/dropdownArea/uploadSession";
-import { HeaderUploadVideo } from "./components/header/HeaderUploadVideo";
+import { UploadSessionComponent } from "./_components/dropdownArea/uploadSession";
+import { HeaderUploadVideo } from "./_components/header/HeaderUploadVideo";
 import { useUploadPageController } from "./useUploadPageController";
 
 export default function UploadVideo() {

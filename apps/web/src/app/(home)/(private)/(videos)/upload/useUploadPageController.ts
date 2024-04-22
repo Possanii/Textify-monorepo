@@ -7,8 +7,8 @@ const schema = z.object({
     z
       .instanceof(File)
       .refine(
-        (file) => file.size < 15 * 1024 * 1024,
-        "File must be less than 15 MB",
+        (file) => file.size < 20 * 1024 * 1024,
+        "File must be less than 20 MB",
       ),
   ),
 });

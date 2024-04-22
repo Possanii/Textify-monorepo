@@ -1,9 +1,9 @@
 import { genSalt, hash } from "bcryptjs";
-import { userModel } from "../../../../schemas/userSchema";
 import {
   EmailAlreadyExists,
   PasswordNotEquals,
 } from "../../exceptions/UserExceptions";
+import { userModel } from "../../schemas/userSchema";
 
 import { IUser } from "../../interfaces/IUser";
 

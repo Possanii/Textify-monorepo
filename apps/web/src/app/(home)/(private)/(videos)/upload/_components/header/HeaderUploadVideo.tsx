@@ -3,9 +3,8 @@ import { Button } from "@ui/src/components/ui/Button";
 import { useHeaderUploadVideoController } from "./useHeaderUploadVideoController";
 
 export function HeaderUploadVideo() {
-  const { watch, reset } = useHeaderUploadVideoController();
-
-  console.log(watch("videos"));
+  const { watch, reset, isSubmitting, handleSubmit } =
+    useHeaderUploadVideoController();
 
   return (
     <header className="flex justify-between h-8">
@@ -15,7 +14,9 @@ export function HeaderUploadVideo() {
           className="h-full underline text-red-500 dark:hover:bg-red-500 dark:hover:text-black"
           variant={"ghost"}
           disabled={
-            watch("videos") !== undefined && watch("videos").length > 0
+            watch("videos") !== undefined &&
+            watch("videos").length > 0 &&
+            !isSubmitting
               ? false
               : true
           }
@@ -26,10 +27,13 @@ export function HeaderUploadVideo() {
         <Button
           className="h-full"
           disabled={
-            watch("videos") !== undefined && watch("videos").length > 0
+            watch("videos") !== undefined &&
+            watch("videos").length > 0 &&
+            !isSubmitting
               ? false
               : true
           }
+          onClick={handleSubmit}
         >
           Enviar todos
         </Button>

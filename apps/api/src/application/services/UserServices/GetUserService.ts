@@ -1,6 +1,6 @@
-import { userModel } from "../../../../schemas/userSchema";
 import { UserNotFound } from "../../exceptions/UserExceptions";
 import { IUser } from "../../interfaces/IUser";
+import { userModel } from "../../schemas/userSchema";
 
 export class GetUserService {
   async execute({ id }: { id: string }): Promise<Partial<IUser>> {

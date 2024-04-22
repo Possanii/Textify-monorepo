@@ -6,12 +6,13 @@ import { Controller } from "react-hook-form";
 import { useUploadController } from "./useUploadController";
 
 export function UploadSessionComponent() {
-  const { control } = useUploadController();
+  const { control, isSubmitting } = useUploadController();
 
   return (
     <Controller
       control={control}
       name={"videos"}
+      disabled={isSubmitting}
       render={({ field: { onChange, value } }) => {
         return (
           <div className="flex flex-col gap-10 border-dashed border-2 bg-white">

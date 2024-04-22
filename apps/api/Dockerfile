@@ -13,3 +13,15 @@ RUN minio server /buckets & \
     kill $server_pid
 
 CMD ["minio", "server", "/buckets", "--address", ":9000", "--console-address", ":9001"]
+
+# Set the working directory in the container to /app
+WORKDIR /app
+
+# Copy the current directory contents into the container at /app
+COPY . /app
+
+# Make your script executable
+RUN chmod +x /app/setup_minio.sh
+
+# Run the command inside your container filesystem
+RUN /app/setup_minio.sh

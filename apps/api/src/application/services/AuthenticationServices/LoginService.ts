@@ -1,9 +1,9 @@
 import { compare } from "bcryptjs";
 import { sign } from "jsonwebtoken";
-import { userModel } from "../../../../schemas/userSchema";
 import { env } from "../../config/env";
 import { InvalidPassword, UserNotFound } from "../../exceptions/UserExceptions";
 import { IUser } from "../../interfaces/IUser";
+import { userModel } from "../../schemas/userSchema";
 
 export class LoginService {
   async execute(data: IUser): Promise<{ accessToken: string }> {
