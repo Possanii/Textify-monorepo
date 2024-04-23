@@ -1,7 +1,7 @@
 import z from "zod";
 import { IController, IResponse } from "../../interfaces/IController";
 import { IRequest } from "../../interfaces/IRequest";
-import { storageProvider } from "../../services/storage";
+import { storageProvider } from "../../services/StorageServices";
 
 const schema = z.object({
   folder: z.string().min(3),

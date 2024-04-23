@@ -1,5 +1,5 @@
 import { UploadedFile } from "express-fileupload";
-import { Client } from "minio";
+import { BucketItemStat, Client } from "minio";
 import crypto from "node:crypto";
 import { readFileSync } from "node:fs";
 import { env } from "../../../config/env";
@@ -55,12 +55,22 @@ export class MinioStorageProvider implements IStorageProvider {
   async createUrlStream({ path }: { path: string }): Promise<string> {
     try {
       const url = await this.client
-        .presignedUrl("GET", env.STORAGE_BUCKET, path, 60)
+        .presignedUrl("GET", env.STORAGE_BUCKET, path, 60 * 60 * 24)
         .then();
 
       return url;
     } catch (error) {
       throw new Error();
+    }
+  }
+
+  async getMetadata({ path }: { path: string }): Promise<BucketItemStat> {
+    try {
+      const stats = await this.client.statObject(env.STORAGE_BUCKET, path);
+
+      return stats;
+    } catch (error) {
+      throw new Error("Error deleting file");
     }
   }
 

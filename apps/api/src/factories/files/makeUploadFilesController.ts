@@ -1,4 +1,4 @@
-import { UploadFilesController } from "../../application/controller/filesController/UploadFilesController";
+import { UploadFilesController } from "../../application/controller/StorageController/UploadFilesController";
 
 export function makeUploadFilesController() {
   return new UploadFilesController();

@@ -1,35 +1,24 @@
-import { FileArray } from "express-fileupload";
+import { FileArray, UploadedFile } from "express-fileupload";
 import { unlinkSync } from "fs";
 import { ZodError } from "zod";
 import { IController, IResponse } from "../../interfaces/IController";
 import { IRequest } from "../../interfaces/IRequest";
-import { storageProvider } from "../../services/storage";
+import { storageProvider } from "../../services/StorageServices";
 
 async function getAllPaths(
   files: FileArray,
-): Promise<{ [key: string]: string[] } | void> {
+): Promise<{ [key: string]: string } | void> {
   try {
-    const pathsByType: { [key: string]: string[] } = {};
+    const pathsByType: { [key: string]: string } = {};
 
     for (const key in files) {
-      const filesArray = files[key];
-      const paths: string[] = [];
+      const file = files[key];
 
-      if (Array.isArray(filesArray)) {
-        await Promise.all(
-          filesArray.map(async (file) => {
-            const fileName = await storageProvider.upload({ file, key });
-            paths.push(fileName);
-          }),
-        );
-        pathsByType[key] = paths;
-      } else {
-        const fileName = await storageProvider.upload({
-          file: filesArray!,
-          key,
-        });
-        pathsByType[key] = [fileName];
-      }
+      const fileName = await storageProvider.upload({
+        file: file! as UploadedFile,
+        key,
+      });
+      pathsByType[key] = fileName;
     }
 
     return pathsByType;

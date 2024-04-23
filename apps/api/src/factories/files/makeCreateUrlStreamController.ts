@@ -1,4 +1,4 @@
-import { CreateUrlStreamController } from "../../application/controller/filesController/CreateUrlStreamController";
+import { CreateUrlStreamController } from "../../application/controller/StorageController/CreateUrlStreamController";
 
 export function makeCreateUrlStreamController() {
   return new CreateUrlStreamController();
