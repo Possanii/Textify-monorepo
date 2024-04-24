@@ -1,4 +1,4 @@
-import { makeLoginController } from "../../factories/controller/AutenticationControllers/makeLoginController";
+import { makeLoginController } from "../../factories/controller/AuthenticationControllers/makeLoginController";
 import { makeCreateUserController } from "../../factories/controller/UserControllers/makeCreateUserController";
 import { routeAdapter } from "../adapters/routeAdapter";
 import app from "../config";

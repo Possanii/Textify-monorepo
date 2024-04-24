@@ -1,3 +1,4 @@
+import { makeGetAllPublicVideosController } from "../../factories/controller/VideoController/makeGetAllPublicVideosController";
 import { makeCreateUrlStreamController } from "../../factories/files/makeCreateUrlStreamController";
 import { makeDeleteFileController } from "../../factories/files/makeDeleteFIleController";
 import { makeUploadFilesController } from "../../factories/files/makeUploadFilesController";
@@ -11,6 +12,8 @@ app.post(
   middlewareAdapter(makeAuthenticationMiddleware()),
   routeAdapter(makeUploadFilesController()),
 );
+
+app.get("/file/all", routeAdapter(makeGetAllPublicVideosController()));
 
 app.get("/file/:folder/:path", routeAdapter(makeCreateUrlStreamController()));
 
