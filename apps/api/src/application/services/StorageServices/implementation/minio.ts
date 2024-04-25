@@ -55,7 +55,12 @@ export class MinioStorageProvider implements IStorageProvider {
   async createUrlStream({ path }: { path: string }): Promise<string> {
     try {
       const url = await this.client
-        .presignedUrl("GET", env.STORAGE_BUCKET, path, 60 * 60 * 24)
+        .presignedUrl(
+          "GET",
+          env.STORAGE_BUCKET,
+          path,
+          99999999999999999999999999999999999999999999,
+        )
         .then();
 
       return url;

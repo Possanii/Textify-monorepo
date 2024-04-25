@@ -1,8 +1,8 @@
-import { IVIdeo } from "../../interfaces/IVideo";
+import { IVideo } from "../../interfaces/IVideo";
 import { videoModal } from "../../schemas/videoSchema";
 
 export class GetAllPublicVideosService {
-  async execute(): Promise<IVIdeo[]> {
+  async execute(): Promise<IVideo[]> {
     const videos = videoModal.find({
       type: "public",
     });
