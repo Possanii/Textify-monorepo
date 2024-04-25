@@ -1,13 +1,10 @@
-// export default function Home() {
-//   return (
-//     <div>
-//       <span>Home</span>
-//     </div>
-//   );
-// }
+import { VideosSection } from "./_components/videosSection";
 
-const UploadScreen = () => {
-  return <div>Home</div>;
-};
-
-export default UploadScreen;
+export default function Home() {
+  return (
+    <div className="flex flex-col">
+      <div>HEADER</div>
+      <VideosSection />
+    </div>
+  );
+}
