@@ -10,7 +10,7 @@ export default function Cadastro() {
   const { register, handleSubmit, errors, isLoading } = useSignUpController();
 
   return (
-    <div className="bg-slate-100 min-h-screen flex p-4 items-center justify-center bg-gradient-to-br from-green-400">
+    <div className="bg-slate-700 min-h-screen flex p-4 items-center justify-center bg-gradient-to-br from-black">
       <div className="max-w-md mx-auto bg-white border border-black p-8 w-full shadow-xl backdrop-blur-sm  ">
         <img src={Logo.src} alt="Textify Logo" className="mx-auto mb-6" />
 
@@ -57,7 +57,7 @@ export default function Cadastro() {
         </form>
         <p className="mt-4 text-center text-gray-600">
           Já possui uma conta?{" "}
-          <Link href="/login" className="text-green-500 hover:underline">
+          <Link href="/login" className="text-black hover:text-slate-700 hover:underline">
             Realizar login
           </Link>
         </p>

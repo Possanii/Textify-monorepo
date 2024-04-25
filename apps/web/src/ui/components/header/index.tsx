@@ -23,7 +23,7 @@ export function Header() {
         </div>
         <div className="flex gap-4">
           <Link href={"/upload"}>
-            <Button className="dark:bg-white/80 dark:hover:bg-white">
+            <Button className="dark:bg-white/80 dark:hover:bg-white text-black">
               Carregar vídeo
             </Button>
           </Link>

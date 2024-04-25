@@ -59,7 +59,7 @@ export class MinioStorageProvider implements IStorageProvider {
           "GET",
           env.STORAGE_BUCKET,
           path,
-          99999999999999999999999999999999999999999999,
+          99999,
         )
         .then();
 

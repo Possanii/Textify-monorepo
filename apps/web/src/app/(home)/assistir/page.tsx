@@ -14,7 +14,7 @@ export default function WatchVideo() {
           <video width="1920" height="1080" controls>
             <source src={video.publicURL} type="video/mp4"></source>
           </video>
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2 bg-white">
             <span>Name: {video.fileName}</span>
             <div className="flex gap-4 items-center justify-end">
               <span>Views: {video.views}</span>

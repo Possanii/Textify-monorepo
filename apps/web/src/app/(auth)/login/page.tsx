@@ -15,7 +15,7 @@ export default function Login() {
       // initial={{ opacity: 0, y: 50 }}
       // animate={{ opacity: 1, y: 0 }}
       // transition={{ duration: 0.5 }}
-      className=" bg-slate-100 min-h-screen flex items-center justify-center bg-gradient-to-br from-green-400"
+      className=" bg-slate-700 min-h-screen flex items-center justify-center bg-gradient-to-br from-black"
     >
       <div className="bg-white p-8 rounded border border-black shadow-md w-full max-w-md backdrop-contrast-100">
         <motion.img
@@ -49,11 +49,11 @@ export default function Login() {
         </form>
 
         <div className="text-center py-3">
-          <p className="text-black w-full px-4 py-2 mb-4 rounded">
+          <p className="text-slate-700 w-full px-4 py-2 mb-4 rounded">
             Não possui cadastro?{" "}
             <Link
               href="/cadastro"
-              className="text-green-500 rounded p-1 mb-4 hover:underline"
+              className="text-black hover:text-slate-700 rounded p-1 mb-4 hover:underline"
             >
               Realizar cadastro
             </Link>
