@@ -18,7 +18,7 @@ export function VideoItem({ url, size, onClick }: IVideoItem) {
       </video>
       <div className="flex flex-col justify-between items-center">
         <PMedium>TITLE</PMedium>
-        <PSmall>{size}</PSmall>
+        <PSmall>{size} MB</PSmall>
       </div>
     </div>
   );

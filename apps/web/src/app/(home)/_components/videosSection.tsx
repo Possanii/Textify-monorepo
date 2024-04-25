@@ -4,6 +4,10 @@ import { useRouter } from "next/navigation";
 import { VideoItem } from "../../../../../../packages/ui/src/components/ui/VideoItem";
 import { useVideosSectionController } from "./useVideosSectionController";
 
+function bytesToMegabytes(bytes: number): number {
+    return parseFloat((bytes / 1048576).toFixed(2))
+}
+
 export function VideosSection() {
   const { isPending, videos } = useVideosSectionController();
   const router = useRouter();
@@ -14,7 +18,7 @@ export function VideosSection() {
         videos.map((video) => (
           <VideoItem
             key={video._id}
-            size={video.sizeInBytes}
+            size={bytesToMegabytes(video.sizeInBytes)}
             url={video.publicURL}
             onClick={() => router.push(`/assistir?video=${video._id}`)}
           />
@@ -25,3 +29,4 @@ export function VideosSection() {
     </div>
   );
 }
+
