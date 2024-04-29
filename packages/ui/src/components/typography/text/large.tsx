@@ -7,7 +7,7 @@ export function PLarge({ children, className }: IPLarger) {
   return (
     <p
       className={cn(
-        "font-manrope font-normal text-[18px] leading-[1.5]",
+        "font-manrope font-normal text-[18px] leading-[1.5] truncate",
         className,
       )}
     >

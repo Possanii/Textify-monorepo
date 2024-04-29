@@ -7,7 +7,7 @@ export function PFadeSmall({ children, className }: IPMedium) {
   return (
     <p
       className={cn(
-        "font-manrope font-light text-[12px] leading-[1.5] text-black/80",
+        "font-manrope font-light text-[12px] leading-[1.5] text-black/80 truncate",
         className,
       )}
     >

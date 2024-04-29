@@ -8,5 +8,5 @@ export interface IVideo {
   likes: number;
   dislikes: number;
   uploadedBy: string;
-  uploadedAt: Date;
+  uploadedAt: Date | string;
 }

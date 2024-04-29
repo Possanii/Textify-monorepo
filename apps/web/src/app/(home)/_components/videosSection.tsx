@@ -1,11 +1,11 @@
 "use client";
 
+import { VideoItem } from "@ui/src/components/ui/VideoItem";
 import { useRouter } from "next/navigation";
-import { VideoItem } from "../../../../../../packages/ui/src/components/ui/VideoItem";
 import { useVideosSectionController } from "./useVideosSectionController";
 
 function bytesToMegabytes(bytes: number): number {
-    return parseFloat((bytes / 1048576).toFixed(2))
+  return parseFloat((bytes / 1048576).toFixed(2));
 }
 
 export function VideosSection() {
@@ -18,15 +18,16 @@ export function VideosSection() {
         videos.map((video) => (
           <VideoItem
             key={video._id}
+            title={video.fileName}
             size={bytesToMegabytes(video.sizeInBytes)}
+            date={new Date(video.uploadedAt)}
             url={video.publicURL}
             onClick={() => router.push(`/assistir?video=${video._id}`)}
           />
         ))
       ) : (
-        <div>Loading...</div>
+        <div className="text-white">Loading...</div>
       )}
     </div>
   );
 }
-
