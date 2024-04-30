@@ -27,6 +27,7 @@ export function Header() {
               Carregar vídeo
             </Button>
           </Link>
+
           <Link href={"/perfil"}>
             <Avatar>
               <AvatarImage src="https://github.com/shadcn.png" />

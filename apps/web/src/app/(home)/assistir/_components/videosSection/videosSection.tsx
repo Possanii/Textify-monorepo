@@ -1,17 +1,18 @@
 "use client";
 
-import { VideoItem } from "@ui/src/components/ui/VideoItem";
+import { VideoItem } from "@ui/components/ui/VideoItem";
+import { ScrollArea } from "@ui/components/ui/scroll-area";
 import { useRouter } from "next/navigation";
-import { bytesToMegabytes } from "../../../hooks/formatBytes";
+import { bytesToMegabytes } from "../../../../../hooks/formatBytes";
 import { useVideosSectionController } from "./useVideosSectionController";
 
 export function VideosSection() {
-  const { isPending, videos } = useVideosSectionController();
+  const { videos } = useVideosSectionController();
   const router = useRouter();
 
   return (
-    <div className="grid grid-cols-4 gap-4">
-      {!isPending && videos ? (
+    <ScrollArea className="h-[800px] min-w-[370px] rounded-md ">
+      {videos ? (
         videos.map((video) => (
           <VideoItem
             key={video._id}
@@ -25,6 +26,6 @@ export function VideosSection() {
       ) : (
         <div className="text-white">Loading...</div>
       )}
-    </div>
+    </ScrollArea>
   );
 }
