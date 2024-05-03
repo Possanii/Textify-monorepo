@@ -29,6 +29,7 @@ export class UpdateUserController implements IController {
   async handle({ body, user }: IRequest): Promise<IResponse> {
     try {
       const data = schema.parse({ id: user!.id, ...body });
+
       await this.updateUserService.execute(data);
 
       return {
