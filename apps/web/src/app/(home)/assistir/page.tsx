@@ -41,7 +41,7 @@ export default function WatchVideo() {
             <video ref={videoRef} width="1920" height="1080" controls>
               <source src={video.publicURL} type="video/mp4"></source>
             </video>
-            <div className="flex flex-col gap-2 bg-white px-4">
+            <div className="flex flex-col gap-2 bg-white p-4 mt-4 rounded">
               <span>{video.fileName}</span>
               <div className="flex gap-4 items-center justify-end">
                 <span>Visualizações: {video.views}</span>

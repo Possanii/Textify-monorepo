@@ -1,7 +1,8 @@
+import { convertMP4toMP3 } from "@textify/ffmpeg";
 import { UploadedFile } from "express-fileupload";
 import { BucketItemStat, Client } from "minio";
 import crypto from "node:crypto";
-import { readFileSync } from "node:fs";
+import { readFileSync, unlinkSync } from "node:fs";
 import { env } from "../../../config/env";
 import { IStorageProvider } from "../types/IStorage-Provider";
 
@@ -35,7 +36,7 @@ export class MinioStorageProvider implements IStorageProvider {
 
       const buffer = readFileSync(file.tempFilePath as string);
 
-      const hashedName =
+      const hashedMp4Name =
         key.split(":")[1]! +
         "/" +
         Date.now() +
@@ -44,9 +45,21 @@ export class MinioStorageProvider implements IStorageProvider {
         "-" +
         file.name;
 
-      await this.client.putObject(env.STORAGE_BUCKET, hashedName, buffer);
+      const outputTempFilePath = await convertMP4toMP3(
+        file.tempFilePath,
+        file.name.split(".")[0]! + ".mp3",
+      );
 
-      return hashedName;
+      const hashedMp3Name = "audio/" + hashedMp4Name.split(".")[0]! + ".mp3";
+
+      const bufferMp3 = readFileSync(outputTempFilePath);
+
+      await this.client.putObject(env.STORAGE_BUCKET, hashedMp4Name, buffer);
+      await this.client.putObject(env.STORAGE_BUCKET, hashedMp3Name, bufferMp3);
+
+      unlinkSync(outputTempFilePath);
+
+      return hashedMp4Name;
     } catch (error) {
       throw new Error("Error uploading file");
     }
@@ -54,14 +67,7 @@ export class MinioStorageProvider implements IStorageProvider {
 
   async createUrlStream({ path }: { path: string }): Promise<string> {
     try {
-      const url = await this.client
-        .presignedUrl(
-          "GET",
-          env.STORAGE_BUCKET,
-          path,
-          99999,
-        )
-        .then();
+      const url = `http://${env.STORAGE_ENDPOINT}:${env.STORAGE_PORT}/${env.STORAGE_BUCKET}/${path}`;
 
       return url;
     } catch (error) {

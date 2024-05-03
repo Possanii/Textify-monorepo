@@ -48,7 +48,7 @@ export function VideoItem({
       <video ref={videoRef} className="rounded w-full img-thumbnail">
         <source src={url} type="video/mp4"></source>
       </video>
-      <div className="flex flex-col justify-between items-center w-full">
+      <div className="flex flex-col justify-between items-center w-full text-black">
         <PMedium className="w-full">{title}</PMedium>
         <div className="flex justify-between w-full">
           <PSmall>{date.toLocaleDateString()}</PSmall>

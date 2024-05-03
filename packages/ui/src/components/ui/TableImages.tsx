@@ -12,6 +12,13 @@ import {
   TableHeader,
   TableRow,
 } from "./Table";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./select";
 
 interface ITableImages {
   images?: File[];
@@ -91,6 +98,7 @@ export function TableImages({ images, onFilesChange }: ITableImages) {
             <TableHeader>
               <TableRow>
                 <TableHead className="w-[160px]">Vídeo</TableHead>
+                <TableHead>Categoria</TableHead>
                 <TableHead>Tamanho</TableHead>
                 <TableHead>Status</TableHead>
               </TableRow>
@@ -112,6 +120,23 @@ export function TableImages({ images, onFilesChange }: ITableImages) {
                       <source src={video.url} type="video/mp4" />
                     </video>
                     <PSmall>{video.name}</PSmall>
+                  </TableCell>
+                  <TableCell className="w-28 max-w-28">
+                    <Select>
+                      <SelectTrigger className="w-full dark:bg-transparent dark:text-black">
+                        <SelectValue
+                          placeholder="Categoria"
+                          className="truncate"
+                        />
+                      </SelectTrigger>
+                      <SelectContent className="dark:bg-white dark:text-black ">
+                        <SelectItem value="música">Música</SelectItem>
+                        <SelectItem value="esporte">Esporte</SelectItem>
+                        <SelectItem value="entretenimento">
+                          Entretenimento
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
                   </TableCell>
                   <TableCell className="w-10">
                     <PSmall>{`${(video.file.size / (1024 * 1024)).toFixed(2)} MB`}</PSmall>

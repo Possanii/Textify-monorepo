@@ -1,0 +1,22 @@
+{
+  "name": "@textify/ffmpeg",
+  "main": "./index.ts",
+  "types": "./index.ts",
+  "version": "0.0.0",
+  "private": true,
+  "dependencies": {
+    "ffmpeg-static": "^5.2.0",
+    "fluent-ffmpeg": "^2.1.2"
+  },
+  "devDependencies": {
+    "@repo/eslint-config": "*",
+    "@repo/shared-config": "*",
+    "@repo/typescript-config": "*"
+  },
+  "eslintConfig": {
+    "root": true,
+    "extends": [
+      "@repo/eslint-config/library"
+    ]
+  }
+}
