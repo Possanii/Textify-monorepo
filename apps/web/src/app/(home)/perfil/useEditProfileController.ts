@@ -11,9 +11,11 @@ import { useEffect } from "react";
 
 
 const schema = z.object({
+  //file: z.instanceof(File),
   name: z.string(),
   email: z.string().email("Email incorreto"),
   password: z.string().min(8, "Senha deve ter 8 dígitos"),
+  newPassword: z.string().min(8, "Senha deve ter no minimo 8 digitos")
 });
 
 type formData = z.infer<typeof schema>;
@@ -43,32 +45,37 @@ export function useEditProfileController() {
   });
 
   const { mutateAsync, isPending } = useMutation({
-    mutationFn: async ({ name, email, password }: formData) =>
-      await authServices.updateprofile({ name, email, password }),
+    mutationFn: async ({name, email, password, newPassword}: formData) =>
+      await authServices.updateprofile({name, email, password, newPassword}),
   });
 
   const handleSubmit = hookFormHandleSubmit(async (data) => {
+    if (data.password === data.newPassword) {
+      toast.error("A nova senha não pode ser a mesma que a senha atual.");
+      return;
+    }
+  
     try {
-        const { accessToken } = await mutateAsync(data);
-        signin(accessToken.accessToken);
-      } catch (err) {
-        const error = err as AxiosError;
-        if (error.response) {
-          switch (error.response.status) {
-            case 404:
-              toast.error("Invalid username, email or password");
-              break;
-            default:
-              toast.error("Something went wrong");
-              break;
-          }
-        } else {
-          // Trate os erros que não têm uma resposta (por exemplo, problemas de rede)
-          toast.error("Something went wrong");
+      const { accessToken } = await mutateAsync(data);
+      signin(accessToken);
+      toast.success("Perfil atualizado");
+    } catch (err) {
+      const error = err as AxiosError;
+      if (error.response) {
+        switch (error.response.status) {
+          case 404:
+            toast.error("Invalid username, email or password");
+            break;
+          default:
+            toast.error("Something went wrong");
+            break;
         }
+      } else {
+        toast.error("Something went wrong");
       }
-      
+    }
   });
+  
 
   return {
     register,
