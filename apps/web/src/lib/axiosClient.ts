@@ -6,6 +6,7 @@ export const axiosClient = axios.create({
   timeout: 5000,
 });
 
+// Interceptor
 axiosClient.interceptors.request.use((config) => {
   const accessToken = GetAccessToken();
 
