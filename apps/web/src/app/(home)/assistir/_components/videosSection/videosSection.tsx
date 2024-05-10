@@ -11,7 +11,7 @@ export function VideosSection() {
   const router = useRouter();
 
   return (
-    <ScrollArea className="h-[800px] min-w-[370px] rounded-md ">
+    <ScrollArea className="h-[800px] min-w-[370px] rounded-md" style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
       {videos ? (
         videos.map((video) => (
           <VideoItem
