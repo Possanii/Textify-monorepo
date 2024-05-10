@@ -10,7 +10,7 @@ export function VideosSection() {
   const router = useRouter();
 
   return (
-    <div className="grid grid-cols-4 gap-4">
+    <div className="grid grid-cols-4 gap-4" style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)', padding: '20px', borderRadius: '8px' }}>
       {!isPending && videos ? (
         videos.map((video) => (
           <VideoItem

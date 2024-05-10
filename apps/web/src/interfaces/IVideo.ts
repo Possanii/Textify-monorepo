@@ -10,3 +10,5 @@ export interface IVideo {
   uploadedBy: string;
   uploadedAt: Date | string;
 }
+
+export default IVideo;

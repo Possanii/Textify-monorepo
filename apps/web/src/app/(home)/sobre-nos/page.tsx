@@ -1,16 +1,16 @@
 import React from "react";
-import Logo from "../../../../public/Logo_with_black_text.png";
+import Logo from "../../../../public/textify-text-white.png";
 
 const SobreNos = () => {
   return (
     <div className="flex justify-center items-center h-screen ">
-      <div className="p-6 bg-white shadow-lg rounded-lg">
+      <div className="p-6 bg-transparent shadow-lg rounded-lg text-white text-center">
         <h1 className="text-3xl font-bold mb-4 text-center">
           Textify - Transformando Áudio em Texto com Inteligência Artificial
         </h1>
-        {/* <div className='mt-5 items-center justify-center'>
+        <div className='flex mt-5 items-center justify-center'>
         <img src={Logo.src} alt="Textify"/>
-        </div> */}
+        </div>
         <p className="text-lg py-8">
           <p className="p-6">
             Bem-vindo à <strong>Textify</strong>, onde a tecnologia e a inovação se encontram
