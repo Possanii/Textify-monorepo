@@ -5,7 +5,7 @@ import { IRequest } from "../../interfaces/IRequest";
 import { LoginService } from "../../services/AuthenticationServices/LoginService";
 
 const schema = z.object({
-  email: z.string().email().min(4),
+  email: z.string().email(),
   password: z.string().min(6),
 });
 

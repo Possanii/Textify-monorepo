@@ -5,23 +5,43 @@ import {
 } from "../../exceptions/UserExceptions";
 import { IController, IResponse } from "../../interfaces/IController";
 import { IRequest } from "../../interfaces/IRequest";
-import { UpdateUserService } from "../../services/UserServices/UpdateUserService";
+import {
+  IUpdateUser,
+  UpdateUserService,
+} from "../../services/UserServices/UpdateUserService";
 
 const schema = z
   .object({
     id: z.string().min(1),
-    name: z.string().min(3).optional(),
-    email: z.string().email().optional(),
-    password: z.string().min(6).optional(),
+    name: z.string(),
+    email: z.string().email("Email incorreto"),
+    password: z.union([
+      z.string().min(8, "Senha deve ter 8 dígitos"),
+      z.string().refine((value) => value === ""),
+    ]),
+    newPassword: z.union([
+      z.string().min(8, "Senha deve ter no minimo 8 digitos"),
+      z.string().refine((value) => value === ""),
+    ]),
   })
   .refine(
     (data) => {
-      if (!data.name && !data.email && !data.password) {
+      if (!data.name && !data.email && !data.password && !data.newPassword) {
         return false;
       }
       return true;
     },
     { message: "Nada para atualizar" },
+  )
+  .refine(
+    (data) => {
+      if (data.password && !data.newPassword) {
+        return false;
+      } else {
+        return true;
+      }
+    },
+    { path: ["newPassword"], message: "Informe a nova senha" },
   );
 
 export class UpdateUserController implements IController {
@@ -30,7 +50,7 @@ export class UpdateUserController implements IController {
     try {
       const data = schema.parse({ id: user!.id, ...body });
 
-      await this.updateUserService.execute(data);
+      await this.updateUserService.execute(data as IUpdateUser);
 
       return {
         body: { message: "Atualizado com sucesso!" },

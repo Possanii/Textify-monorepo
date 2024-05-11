@@ -6,8 +6,13 @@ import {
 import { IUser } from "../../interfaces/IUser";
 import { userModel } from "../../schemas/userSchema";
 
+export interface IUpdateUser
+  extends Pick<IUser, "id" | "email" | "name" | "password"> {
+  newPassword: string | undefined;
+}
+
 export class UpdateUserService {
-  async execute(data: IUser): Promise<void> {
+  async execute(data: IUpdateUser): Promise<void> {
     const findUser = await userModel.findById(data.id);
 
     if (!findUser) {
@@ -23,8 +28,12 @@ export class UpdateUserService {
       }
     }
 
-    const salt = await genSalt(12);
-    const passwordHash = await hash(data.password!, salt);
+    let passwordHash = undefined;
+
+    if (data.newPassword) {
+      const salt = await genSalt(12);
+      passwordHash = await hash(data.newPassword!, salt);
+    }
 
     await userModel.findByIdAndUpdate(data.id, {
       name: data.name,
