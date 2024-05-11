@@ -1,40 +1,45 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 import { UseAuth } from "../../../hooks/useAuth";
+import { IUser } from "../../../interfaces/IUser";
 import { authServices } from "../../../services/auth";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
 
-
-const schema = z.object({
-  //file: z.instanceof(File),
-  name: z.string(),
-  email: z.string().email("Email incorreto"),
-  password: z.string().min(8, "Senha deve ter 8 dígitos"),
-  newPassword: z.string().min(8, "Senha deve ter no minimo 8 digitos")
-});
+const schema = z
+  .object({
+    //file: z.instanceof(File),
+    name: z.string(),
+    email: z.string().email("Email incorreto"),
+    password: z.union([
+      z.string().min(8, "Senha deve ter 8 dígitos"),
+      z.string().refine((value) => value === ""),
+    ]),
+    newPassword: z.union([
+      z.string().min(8, "Senha deve ter no minimo 8 digitos"),
+      z.string().refine((value) => value === ""),
+    ]),
+  })
+  .refine(
+    (data) => {
+      if (data.password && !data.newPassword) {
+        return false;
+      } else {
+        return true;
+      }
+    },
+    { path: ["newPassword"], message: "Informe a nova senha" },
+  );
 
 type formData = z.infer<typeof schema>;
 
-export default function Perfil(){
-  const router = useRouter();
-  const {isSignedIn} = UseAuth();
-
-
-  useEffect(() => {
-    if (isSignedIn){
-      router.replace('/login');
-    }
-  }, [isSignedIn]
-)
-}
-
 export function useEditProfileController() {
   const { signin } = UseAuth();
+  const queryClient = useQueryClient();
+
+  const user = queryClient.getQueryData<{ userInfo: IUser }>(["user", "me"]);
 
   const {
     register,
@@ -42,40 +47,40 @@ export function useEditProfileController() {
     formState: { isLoading, errors },
   } = useForm<formData>({
     resolver: zodResolver(schema),
+    defaultValues: {
+      name: user?.userInfo.name,
+      email: user?.userInfo.email,
+      password: undefined,
+      newPassword: undefined,
+    },
   });
 
   const { mutateAsync, isPending } = useMutation({
-    mutationFn: async ({name, email, password, newPassword}: formData) =>
-      await authServices.updateprofile({name, email, password, newPassword}),
+    mutationFn: async ({ name, email, password, newPassword }: formData) =>
+      await authServices.updateprofile({ name, email, password, newPassword }),
   });
 
   const handleSubmit = hookFormHandleSubmit(async (data) => {
-    if (data.password === data.newPassword) {
-      toast.error("A nova senha não pode ser a mesma que a senha atual.");
-      return;
-    }
-  
     try {
-      const { accessToken } = await mutateAsync(data);
-      signin(accessToken);
+      await mutateAsync(data);
+
       toast.success("Perfil atualizado");
     } catch (err) {
       const error = err as AxiosError;
       if (error.response) {
         switch (error.response.status) {
           case 404:
-            toast.error("Invalid username, email or password");
+            toast.error("Informações inválidas");
             break;
           default:
-            toast.error("Something went wrong");
+            toast.error("Algo deu errado. Tente novamente mais tarde.");
             break;
         }
       } else {
-        toast.error("Something went wrong");
+        toast.error("Algo deu errado. Tente novamente mais tarde.");
       }
     }
   });
-  
 
   return {
     register,
