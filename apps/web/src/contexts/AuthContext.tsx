@@ -8,7 +8,7 @@ import { GetAccessToken } from "../hooks/getAccessToken";
 import { IUser } from "../interfaces/IUser";
 import { userServices } from "../services/userServices";
 
-interface AuthContextValue {
+export interface AuthContextValue {
   isSignedIn: boolean;
   signin(accessToken: string): void;
   logout(): void;
@@ -23,7 +23,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const [isSignedIn, setIsSignedIn] = useState(cacheAccessToken ? true : false);
 
-  const { isError, isFetching, isSuccess } = useQuery<{ user: IUser }>({
+  const { isError, isSuccess } = useQuery<{ user: IUser }>({
     queryKey: ["user", "me"],
     queryFn: async () => await userServices.GetMe(),
     staleTime: Infinity,
@@ -34,7 +34,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setCookie(undefined, cookiesKeys.ACCESS_TOKEN, accessToken, {
       maxAge: 60 * 60 * 24, // 24 hours
     });
-
     setIsSignedIn(true);
 
     router.replace("/");
@@ -55,7 +54,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <AuthContext.Provider
-      value={{ isSignedIn: isSuccess && isSignedIn, signin, logout }}
+      value={{ isSignedIn: (isSuccess && isSignedIn) || false, signin, logout }}
     >
       {children}
     </AuthContext.Provider>
