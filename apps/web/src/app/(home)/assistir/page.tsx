@@ -1,60 +1,21 @@
-// "use client";
+"use client";
 
-import { useState, useEffect, useRef } from "react";
 import { Toggle } from "@ui/components/ui/toggle";
 import { ThumbsDown, ThumbsUp } from "lucide-react";
 import { PSmall } from "../../../../../../packages/ui/src/components/typography";
-import { Toggle } from "@ui/components/ui/toggle";
-import { sendLikeDislike } from '../../../../../api/src/server/APIClientVideo/apiClientVideo';
-import { IVideo } from '../../../../../api/src/application/interfaces/IVideo';
-import { useAssistirController } from './useAssistirController';
-import { ThumbsUp, ThumbsDown } from 'lucide-react';
-import { VideosSection } from './_components/videosSection/videosSection'; // Supõe-se que VideosSection é importado corretamente
+import { VideosSection } from "./_components/videosSection/videosSection"; // Supõe-se que VideosSection é importado corretamente
+import { useAssistirController } from "./useAssistirController";
 
 const WatchVideo: React.FC = () => {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const { isPending, video } = useAssistirController();
-
-  // Estados para likes e dislikes e para controle de estado de like/dislike do usuário
-  const [likeCount, setLikeCount] = useState(0);
-  const [dislikeCount, setDislikeCount] = useState(0);
-  const [userLiked, setUserLiked] = useState(false);
-  const [userDisliked, setUserDisliked] = useState(false);
-
-  // Atualizar contadores com dados do vídeo
-  useEffect(() => {
-    if (video) {
-      setLikeCount(video.likes);
-      setDislikeCount(video.dislikes);
-    }
-  }, [video]);
-
-  // Funções de toggle para likes e dislikes
-  const toggleLike = () => {
-    if (userLiked) {
-      setLikeCount(likeCount - 1);
-    } else {
-      if (userDisliked) {
-        setDislikeCount(dislikeCount - 1);
-        setUserDisliked(false);
-      }
-      setLikeCount(likeCount + 1);
-    }
-    setUserLiked(!userLiked);
-  };
-
-  const toggleDislike = () => {
-    if (userDisliked) {
-      setDislikeCount(dislikeCount - 1);
-    } else {
-      if (userLiked) {
-        setLikeCount(likeCount - 1);
-        setUserLiked(false);
-      }
-      setDislikeCount(dislikeCount + 1);
-    }
-    setUserDisliked(!userDisliked);
-  };
+  const {
+    isPending,
+    video,
+    videoRef,
+    likeCount,
+    dislikeCount,
+    toggleLike,
+    toggleDislike,
+  } = useAssistirController();
 
   return (
     <div>
@@ -79,7 +40,8 @@ const WatchVideo: React.FC = () => {
                   <PSmall className="ml-4">{dislikeCount}</PSmall>
                 </Toggle>
                 <span>
-                  Data de envio: {new Date(video.uploadedAt).toLocaleDateString()}
+                  Data de envio:{" "}
+                  {new Date(video.uploadedAt).toLocaleDateString()}
                 </span>
               </div>
             </div>
@@ -89,4 +51,6 @@ const WatchVideo: React.FC = () => {
       )}
     </div>
   );
-}
+};
+
+export default WatchVideo;
