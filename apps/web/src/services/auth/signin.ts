@@ -10,6 +10,7 @@ type IOutput = {
 };
 
 export async function signin(body: IInput) {
+
   const { data } = await axiosClient.post<IOutput>("/auth/login", body);
 
   return data;
