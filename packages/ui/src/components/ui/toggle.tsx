@@ -11,8 +11,9 @@ const toggleVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-transparent",
-        like: "dark:data-[state=on]:bg-red-500 dark:hover:bg-red-300 dark:hover:text-black",
+        default: "bg-transpent",
+        like: "dark:data-[state=on]:bg-blue-500 dark:hover:bg-blue-300 dark:hover:text-black",
+        dislike:"dark:data-[state=on]:bg-red-500 dark:hover:bg-red-300 dark:hover:text-black",
         outline:
           "border border-slate-200 bg-transparent hover:bg-slate-100 hover:text-slate-900 dark:border-slate-800 dark:hover:bg-slate-800 dark:hover:text-slate-50",
       },

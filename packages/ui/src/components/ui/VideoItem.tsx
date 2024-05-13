@@ -41,14 +41,14 @@ export function VideoItem({
 
   return (
     <div
-      className="flex flex-col gap-4 justify-center items-center border border-black bg-white cursor-pointer max-w-[360px] rounded-md p-1"
+      className="flex flex-col gap-4 justify-center items-center border border-black bg-slate-900 bg-gradient-to-br from-black cursor-pointer max-w-[360px] rounded-md p-1"
       role="button"
       onClick={onClick}
     >
       <video ref={videoRef} className="rounded w-full img-thumbnail">
         <source src={url} type="video/mp4"></source>
       </video>
-      <div className="flex flex-col justify-between items-center w-full text-black">
+      <div className="flex flex-col justify-between items-center w-full text-white">
         <PMedium className="w-full">{title}</PMedium>
         <div className="flex justify-between w-full">
           <PSmall>{date.toLocaleDateString()}</PSmall>

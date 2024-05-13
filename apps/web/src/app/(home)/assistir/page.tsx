@@ -27,7 +27,7 @@ const WatchVideo: React.FC = () => {
             <video ref={videoRef} width="1920" height="1080" controls>
               <source src={video.publicURL} type="video/mp4" />
             </video>
-            <div className="flex flex-col gap-2 bg-black/0 p-4 mt-4 rounded-lg shadow-lg border border-gray-800 text-white">
+            <div className="flex flex-col gap-2 bg-black p-4 mt-4 rounded-lg shadow-lg border border-gray-800 text-white">
               <span className="text-lg font-semibold">{video.fileName}</span>
               <div className="flex gap-4 items-center justify-end text-sm">
                 <span>Visualizações: {video.views}</span>
@@ -35,7 +35,7 @@ const WatchVideo: React.FC = () => {
                   <ThumbsUp />
                   <PSmall className="ml-4">{likeCount}</PSmall>
                 </Toggle>
-                <Toggle variant={"default"} onClick={toggleDislike}>
+                <Toggle variant={"dislike"} onClick={toggleDislike}>
                   <ThumbsDown />
                   <PSmall className="ml-4">{dislikeCount}</PSmall>
                 </Toggle>
