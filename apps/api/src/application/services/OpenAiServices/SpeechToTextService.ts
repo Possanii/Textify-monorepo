@@ -1,42 +1,39 @@
-import OpenAI from "openai";
-import * as fs from 'fs';
+import axios from "axios";
+import * as fs from "fs";
+import { env } from "../../config/env";
+import { MinioStorageProvider } from "../StorageServices/implementation/minio";
 
 export class SpeechToTextService {
-    private client: OpenAI;
+  constructor(private readonly storage: MinioStorageProvider) {}
 
-    constructor() {
-        // Crie uma instância do cliente OpenAI
-        this.client = new OpenAI({
-            apiKey: 'sk-proj-rzXo6KIr0m7sbk2OjDzqT3BlbkFJ7TPIbI9pgkrQTNz7f6YW' 
-        });
+  async transcribeAudio(filePath: string): Promise<string> {
+    try {
+      const fileUrl = await this.storage.getFile({ path: filePath });
+
+      const file = fs.createReadStream(fileUrl);
+
+      const response = await axios.post(
+        "https://api.openai.com/v1/audio/transcriptions",
+        {
+          file,
+          model: "whisper-1",
+        },
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: "Bearer " + env.OPENAI_KEY,
+          },
+        },
+      );
+
+      console.log(response.data.text);
+
+      // Retorne a transcrição de texto
+      return response.data.text;
+    } catch (error) {
+      console.log(error);
+
+      throw new Error("Erro ao transcrever o áudio: " + error);
     }
-
-    async transcribeAudio(filePath: string): Promise<string> {
-        try {
-            const audioStream = await this.readAudioFile(filePath);
-
-            // Crie a transcrição de áudio usando a API OpenAI
-            const transcription = await this.client.audio.transcriptions.create({
-                model: 'whisper-1',
-                file: audioStream,
-            });
-
-            // Retorne a transcrição de texto
-            return transcription.text;
-        } catch (error) {
-            throw new Error('Erro ao transcrever o áudio: ' + error);
-        }
-    }
-
-    private readAudioFile(filePath: string): Promise<fs.ReadStream> {
-        return new Promise((resolve, reject) => {
-            const stream = fs.createReadStream(filePath);
-            stream.on('open', () => {
-                resolve(stream);
-            });
-            stream.on('error', (err) => {
-                reject(err);
-            });
-        });
-    }
+  }
 }

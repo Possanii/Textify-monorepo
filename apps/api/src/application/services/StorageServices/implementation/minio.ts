@@ -85,6 +85,21 @@ export class MinioStorageProvider implements IStorageProvider {
     }
   }
 
+  async getFile({ path }: { path: string }): Promise<string> {
+    const file = await new Promise((resolve, reject) => {
+      this.client.fGetObject(
+        env.STORAGE_BUCKET,
+        path,
+        "/tmp/" + path,
+        function (err) {
+          if (err) reject(new Error());
+          resolve("/tmp/" + path);
+        },
+      );
+    });
+    return file as string;
+  }
+
   async delete(path: string): Promise<void> {
     try {
       await this.client.removeObject(env.STORAGE_BUCKET, path);

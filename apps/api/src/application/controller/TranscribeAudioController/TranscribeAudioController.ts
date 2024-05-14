@@ -1,16 +1,42 @@
-import { Request, Response } from 'express';
-import { SpeechToTextService } from '../../services/OpenAiServices/SpeechToTextService'; // Importe corretamente a classe SpeechToTextService
+import z, { ZodError } from "zod";
+import { IController, IResponse } from "../../interfaces/IController";
+import { IRequest } from "../../interfaces/IRequest";
+import { SpeechToTextService } from "../../services/OpenAiServices/SpeechToTextService"; // Importe corretamente a classe SpeechToTextService
 
-const speechToTextService = new SpeechToTextService();
+const schema = z.object({
+  filePath: z.string().min(1),
+});
 
-export const TranscribeAudioController = async (req: Request, res: Response) => {
-    const filePath = req.body.filePath;
+export class TranscribeAudioController implements IController {
+  constructor(private readonly speechToTextService: SpeechToTextService) {}
+
+  async handle({ body }: IRequest): Promise<IResponse> {
     try {
-        const transcription = await speechToTextService.transcribeAudio(filePath);
-        res.json({ transcription });
+      const { filePath } = schema.parse(body);
+
+      const transcription =
+        await this.speechToTextService.transcribeAudio(filePath);
+      return {
+        statusCode: 200,
+        body: { transcription },
+      };
     } catch (error) {
-        res.status(500).json({ error: error }); // Melhore a resposta de erro incluindo apenas a mensagem de erro
+      if (error instanceof ZodError) {
+        return {
+          statusCode: 422,
+          body: { message: "Invalid data", error: error.message },
+        };
+      }
+
+      console.log(error);
+
+      return {
+        statusCode: 500,
+        body: {
+          message: "Internal Error",
+          error: error,
+        },
+      };
     }
-};
-
-
+  }
+}

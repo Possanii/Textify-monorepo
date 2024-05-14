@@ -1,4 +1,4 @@
-import z from "zod";
+import { z } from "zod";
 
 const schema = z.object({
   OPENAI_KEY: z.string().min(1),
