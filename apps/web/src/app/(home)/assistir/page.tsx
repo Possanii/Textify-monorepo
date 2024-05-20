@@ -2,7 +2,11 @@
 
 import { Toggle } from "@ui/components/ui/toggle";
 import { ThumbsDown, ThumbsUp } from "lucide-react";
-import { PSmall } from "../../../../../../packages/ui/src/components/typography";
+import {
+  H4,
+  PSmall,
+} from "../../../../../../packages/ui/src/components/typography";
+import { ScrollArea } from "../../../../../../packages/ui/src/components/ui/scroll-area";
 import { VideosSection } from "./_components/videosSection/videosSection"; // Supõe-se que VideosSection é importado corretamente
 import { useAssistirController } from "./useAssistirController";
 
@@ -44,6 +48,10 @@ const WatchVideo: React.FC = () => {
                   {new Date(video.uploadedAt).toLocaleDateString()}
                 </span>
               </div>
+              <H4>Transcrição:</H4>
+              <ScrollArea className="h-28">
+                <div className="bg-">{video.transcription}</div>
+              </ScrollArea>
             </div>
           </div>
           <VideosSection />
