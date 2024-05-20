@@ -1,7 +1,7 @@
 import z, { ZodError } from "zod";
 import { IController, IResponse } from "../../interfaces/IController";
 import { IRequest } from "../../interfaces/IRequest";
-import { SpeechToTextService } from "../../services/OpenAiServices/SpeechToTextService"; // Importe corretamente a classe SpeechToTextService
+import { SpeechToTextService } from "../../services/TranscriptionServices/SpeechToTextService"; // Importe corretamente a classe SpeechToTextService
 
 const schema = z.object({
   filePath: z.string().min(1),
@@ -15,7 +15,7 @@ export class TranscribeAudioController implements IController {
       const { filePath } = schema.parse(body);
 
       const transcription =
-        await this.speechToTextService.transcribeAudio(filePath);
+        await this.speechToTextService.TranscribeAudioService(filePath);
       return {
         statusCode: 200,
         body: { transcription },

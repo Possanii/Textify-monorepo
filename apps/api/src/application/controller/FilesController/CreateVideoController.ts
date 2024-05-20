@@ -2,11 +2,13 @@ import { IController, IResponse } from "../../interfaces/IController";
 import { IRequest } from "../../interfaces/IRequest";
 import { CreateVideoService } from "../../services/FilesServices/CreateVideoService";
 import { MinioStorageProvider } from "../../services/StorageServices/implementation/minio";
+import { SpeechToTextService } from "../../services/TranscriptionServices/SpeechToTextService";
 
 export class CreateVideoController implements IController {
   constructor(
     private readonly createVideoService: CreateVideoService,
     private readonly minioStorageProvider: MinioStorageProvider,
+    private readonly transcriptService: SpeechToTextService,
   ) {}
 
   async handle({ body, user }: IRequest): Promise<IResponse> {
@@ -22,12 +24,18 @@ export class CreateVideoController implements IController {
           path: file,
         });
 
+        const transcription =
+          await this.transcriptService.TranscribeAudioService(
+            `audio/${file}`.slice(0, -1) + "3",
+          );
+
         await this.createVideoService.execute({
           fileName: file,
           publicURL: urlStream,
           type: (key.split(":")[1] as "public") || "private",
           uploadedBy: user!.id,
           sizeInBytes: metadata.size,
+          transcription,
         });
       }
 
@@ -36,8 +44,6 @@ export class CreateVideoController implements IController {
         body: { message: "Successfully uploaded" },
       };
     } catch (error) {
-      console.log(error);
-
       return {
         statusCode: 500,
         body: { error: "Internal Error" },

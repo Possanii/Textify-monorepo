@@ -7,6 +7,7 @@ export interface IVideo {
   views: number;
   likes: number;
   dislikes: number;
+  transcription: string;
   uploadedBy: string;
   uploadedAt: Date;
 }

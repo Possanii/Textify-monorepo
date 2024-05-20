@@ -11,7 +11,7 @@ const schema = z.object({
   STORAGE_PATH: z.string().optional(),
   STORAGE_ACCESS_KEY_ID: z.string().min(3),
   STORAGE_SECRET_ACCESS_KEY: z.string().min(3),
-  OPENAI_KEY: z.string().min(3),
+  ASSEMBLYAI_KEY: z.string().min(3),
 });
 
 export const env = schema.parse(process.env);
