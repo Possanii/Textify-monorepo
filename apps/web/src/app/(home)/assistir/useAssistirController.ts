@@ -1,21 +1,25 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { axiosClient } from "../../../lib/axiosClient";
 import { storageServices } from "../../../services/storageServices";
+import { toast } from "sonner";
 
 export function useAssistirController() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const searchParams = useSearchParams();
   const videoId = searchParams.get("video");
+  const queryClient = useQueryClient();
 
   const [likeCount, setLikeCount] = useState(0);
   const [dislikeCount, setDislikeCount] = useState(0);
   const [userLiked, setUserLiked] = useState(false);
   const [userDisliked, setUserDisliked] = useState(false);
 
-  const { data: video, isPending } = useQuery({
+  const { data: video, isLoading } = useQuery({
     queryKey: ["video", videoId],
     queryFn: async () => await storageServices.getVideoById(videoId!),
+    enabled: !!videoId,
   });
 
   useEffect(() => {
@@ -25,34 +29,78 @@ export function useAssistirController() {
     }
   }, [video]);
 
-  const toggleLike = () => {
-    if (userLiked) {
-      setLikeCount(likeCount - 1);
-    } else {
-      if (userDisliked) {
-        setDislikeCount(dislikeCount - 1);
-        setUserDisliked(false);
+  const likeMutation = useMutation({
+    mutationFn: async () => {
+      console.log(`Sending like request to /api/videos/${videoId}/like`);
+      await axiosClient.post(`/video/${videoId}/like`);
+    },
+    onSuccess: () => {
+      if (videoId) {
+        queryClient.invalidateQueries({ queryKey: ["video", videoId] });
       }
-      setLikeCount(likeCount + 1);
-    }
-    setUserLiked(!userLiked);
-  };
+      toast.success("Liked the video");
+    },
+    onError: (error) => {
+      console.error("Error liking the video:", error);
+      toast.error("Failed to like the video");
+    },
+  });
 
-  const toggleDislike = () => {
-    if (userDisliked) {
-      setDislikeCount(dislikeCount - 1);
-    } else {
+  const dislikeMutation = useMutation({
+    mutationFn: async () => {
+      console.log(`Sending dislike request to /api/videos/${videoId}/dislike`);
+      await axiosClient.post(`/video/${videoId}/dislike`);
+    },
+    onSuccess: () => {
+      if (videoId) {
+        queryClient.invalidateQueries({ queryKey: ["video", videoId] });
+      }
+      toast.success("Disliked the video");
+    },
+    onError: (error) => {
+      console.error("Error disliking the video:", error);
+      toast.error("Failed to dislike the video");
+    },
+  });
+
+  const toggleLike = async () => {
+    try {
       if (userLiked) {
         setLikeCount(likeCount - 1);
-        setUserLiked(false);
+      } else {
+        if (userDisliked) {
+          setDislikeCount(dislikeCount - 1);
+          setUserDisliked(false);
+        }
+        setLikeCount(likeCount + 1);
       }
-      setDislikeCount(dislikeCount + 1);
+      setUserLiked(!userLiked);
+      await likeMutation.mutateAsync();
+    } catch (error) {
+      console.error("Error liking the video:", error);
     }
-    setUserDisliked(!userDisliked);
+  };
+
+  const toggleDislike = async () => {
+    try {
+      if (userDisliked) {
+        setDislikeCount(dislikeCount - 1);
+      } else {
+        if (userLiked) {
+          setLikeCount(likeCount - 1);
+          setUserLiked(false);
+        }
+        setDislikeCount(dislikeCount + 1);
+      }
+      setUserDisliked(!userDisliked);
+      await dislikeMutation.mutateAsync();
+    } catch (error) {
+      console.error("Error disliking the video:", error);
+    }
   };
 
   return {
-    isPending,
+    isPending: isLoading,
     video,
     videoRef,
     likeCount,
