@@ -1,5 +1,5 @@
-import { UpdateVideoLikesService } from "../../../application/services/VideoServices/UpdateVideoLikesService";
+import { UpdateVideoDislikesService } from "../../../application/services/VideoServices/UpdateVideoDislikesService";
 
 export function makeDislikeVideoService() {
-  return new UpdateVideoLikesService();
+  return new UpdateVideoDislikesService();
 }

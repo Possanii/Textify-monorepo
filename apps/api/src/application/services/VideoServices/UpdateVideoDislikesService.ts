@@ -1,5 +1,4 @@
 import { videoModal } from "../../schemas/videoSchema";
-import { IVideo } from "../../interfaces/IVideo";
 
 export class UpdateVideoDislikesService {
   async execute(videoId: string): Promise<{ likes: number, dislikes: number }> {
