@@ -31,14 +31,14 @@ export function useAssistirController() {
 
   const likeMutation = useMutation({
     mutationFn: async () => {
-      console.log(`Sending like request to /api/videos/${videoId}/like`);
+      console.log(`Enviando requisição do like para /video/${videoId}/like`);
       await axiosClient.post(`/video/${videoId}/like`);
     },
     onSuccess: () => {
       if (videoId) {
         queryClient.invalidateQueries({ queryKey: ["video", videoId] });
       }
-      toast.success("Liked the video");
+      //toast.success("Video curtido");
     },
     onError: (error) => {
       console.error("Error liking the video:", error);
@@ -48,20 +48,53 @@ export function useAssistirController() {
 
   const dislikeMutation = useMutation({
     mutationFn: async () => {
-      console.log(`Sending dislike request to /api/videos/${videoId}/dislike`);
+      console.log(`Enviando requisição do dislike para /video/${videoId}/dislike`);
       await axiosClient.post(`/video/${videoId}/dislike`);
     },
     onSuccess: () => {
       if (videoId) {
         queryClient.invalidateQueries({ queryKey: ["video", videoId] });
       }
-      toast.success("Disliked the video");
+      //toast.success("Video descurtido");
     },
     onError: (error) => {
       console.error("Error disliking the video:", error);
       toast.error("Failed to dislike the video");
     },
   });
+
+    const viewMutation = useMutation({
+      mutationFn: async () => {
+        console.log(`Enviando requisição da view para /video/${videoId}/view`);
+        await axiosClient.post(`/video/${videoId}/view`);
+      },
+      onSuccess: () => {
+        if (videoId) {
+          queryClient.invalidateQueries({ queryKey: ["video", videoId] });
+        }
+      },
+      onError: (error) => {
+        console.error("Error registering view:", error);
+      },
+    });
+  
+    const handlePlay = async () => {
+      try {
+        await viewMutation.mutateAsync();
+      } catch (error) {
+        console.error("Error registering view:", error);
+      }
+    };
+  
+    useEffect(() => {
+      const videoElement = videoRef.current;
+      if (videoElement) {
+        videoElement.addEventListener("play", handlePlay);
+        return () => {
+          videoElement.removeEventListener("play", handlePlay);
+        };
+      }
+    }, [videoRef, videoId]);
 
   const toggleLike = async () => {
     try {

@@ -3,10 +3,12 @@ import { makeGetAllPublicVideosController } from "../../factories/controller/Vid
 import { makeGetVideoByIdController } from "../../factories/controller/VideoController/makeGetVideoByIdController";
 import { makeLikeVideoController } from "../../factories/controller/VideoController/makeUpdateVideoLikesController";
 import { makeDislikeVideoController } from "../../factories/controller/VideoController/makeUpdateVideoDislikesController";
+import { makeViewsVideoController } from "../../factories/controller/VideoController/makeUpdateVideoViewsController";
 import { makeAuthenticationMiddleware } from "../../factories/middleware/makeAuthenticationMiddleware";
 import { middlewareAdapter } from "../adapters/middlewareAdapter";
 import { routeAdapter } from "../adapters/routeAdapter";
 import app from "../config";
+
 
 app.post(
   "/video",
@@ -21,3 +23,5 @@ app.get("/video/:videoId", routeAdapter(makeGetVideoByIdController()));
 app.post("/video/:id/like", routeAdapter(makeLikeVideoController()));
 
 app.post("/video/:id/dislike", routeAdapter(makeDislikeVideoController()));
+
+app.post("/video/:id/view", routeAdapter(makeViewsVideoController()))

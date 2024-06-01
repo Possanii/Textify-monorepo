@@ -7,8 +7,9 @@ import {
   PSmall,
 } from "../../../../../../packages/ui/src/components/typography";
 import { ScrollArea } from "../../../../../../packages/ui/src/components/ui/scroll-area";
-import { VideosSection } from "./_components/videosSection/videosSection"; // Supõe-se que VideosSection é importado corretamente
+import { VideosSection } from "./_components/videosSection/videosSection";
 import { useAssistirController } from "./useAssistirController";
+import { useEffect } from "react";
 
 const WatchVideo: React.FC = () => {
   const {
@@ -21,6 +22,14 @@ const WatchVideo: React.FC = () => {
     toggleDislike,
   } = useAssistirController();
 
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.play().catch(error => {
+        console.error("Erro ao reproduzir video:", error);
+      });
+    }
+  }, [video]);
+
   return (
     <div>
       {isPending || !video ? (
@@ -28,7 +37,7 @@ const WatchVideo: React.FC = () => {
       ) : (
         <div className="flex gap-4 h-full">
           <div className="h-full">
-            <video ref={videoRef} width="1920" height="1080" controls>
+            <video ref={videoRef} width="1920" height="1080" controls autoPlay>
               <source src={video.publicURL} type="video/mp4" />
             </video>
             <div className="flex flex-col gap-2 bg-black p-4 mt-4 rounded-lg shadow-lg border border-gray-800 text-white">
