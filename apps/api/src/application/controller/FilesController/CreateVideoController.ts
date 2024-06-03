@@ -1,6 +1,7 @@
 import { IController, IResponse } from "../../interfaces/IController";
 import { IRequest } from "../../interfaces/IRequest";
 import { CreateVideoService } from "../../services/FilesServices/CreateVideoService";
+import { GetFileNameWithoutHashService } from "../../services/FilesServices/GetFileNameWithoutHashService";
 import { MinioStorageProvider } from "../../services/StorageServices/implementation/minio";
 import { SpeechToTextService } from "../../services/TranscriptionServices/SpeechToTextService";
 
@@ -9,6 +10,7 @@ export class CreateVideoController implements IController {
     private readonly createVideoService: CreateVideoService,
     private readonly minioStorageProvider: MinioStorageProvider,
     private readonly transcriptService: SpeechToTextService,
+    private readonly getFileNameWithoutHashService: GetFileNameWithoutHashService,
   ) {}
 
   async handle({ body, user }: IRequest): Promise<IResponse> {
@@ -29,8 +31,12 @@ export class CreateVideoController implements IController {
             `audio/${file}`.slice(0, -1) + "3",
           );
 
-        await this.createVideoService.execute({
+        const fileName = this.getFileNameWithoutHashService.execute({
           fileName: file,
+        });
+
+        await this.createVideoService.execute({
+          fileName: fileName,
           publicURL: urlStream,
           type: (key.split(":")[1] as "public") || "private",
           uploadedBy: user!.id,

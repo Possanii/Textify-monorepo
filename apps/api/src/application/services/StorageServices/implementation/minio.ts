@@ -21,6 +21,33 @@ export class MinioStorageProvider implements IStorageProvider {
     });
   }
 
+  async getPresignedURL({ name }: { name: string }): Promise<string> {
+    // Create a bucket if it doesn't exist
+    if (!(await this.client.bucketExists(env.STORAGE_BUCKET))) {
+      await this.client.makeBucket(env.STORAGE_BUCKET, env.STORAGE_REGION);
+    }
+
+    const hashedName =
+      "public/" +
+      Date.now() +
+      "-" +
+      crypto.randomBytes(16).toString("hex") +
+      "-" +
+      name;
+
+    return new Promise((resolve, reject) => {
+      this.client.presignedPutObject(
+        env.STORAGE_BUCKET,
+        hashedName,
+        (err, url) => {
+          if (err)
+            reject(new Error(`Erro ao gerar URL pré-assinada: ${err.message}`));
+          resolve(url as string);
+        },
+      );
+    });
+  }
+
   async upload({
     file,
     key,
