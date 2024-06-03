@@ -1,9 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { toast } from "sonner";
 import { axiosClient } from "../../../lib/axiosClient";
 import { storageServices } from "../../../services/storageServices";
-import { toast } from "sonner";
 
 export function useAssistirController() {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -16,8 +16,10 @@ export function useAssistirController() {
   const [userLiked, setUserLiked] = useState(false);
   const [userDisliked, setUserDisliked] = useState(false);
 
+  const router = useSearchParams();
+
   const { data: video, isLoading } = useQuery({
-    queryKey: ["video", videoId],
+    queryKey: ["video", videoId!],
     queryFn: async () => await storageServices.getVideoById(videoId!),
     enabled: !!videoId,
   });
@@ -48,7 +50,9 @@ export function useAssistirController() {
 
   const dislikeMutation = useMutation({
     mutationFn: async () => {
-      console.log(`Enviando requisição do dislike para /video/${videoId}/dislike`);
+      console.log(
+        `Enviando requisição do dislike para /video/${videoId}/dislike`,
+      );
       await axiosClient.post(`/video/${videoId}/dislike`);
     },
     onSuccess: () => {
@@ -63,38 +67,38 @@ export function useAssistirController() {
     },
   });
 
-    const viewMutation = useMutation({
-      mutationFn: async () => {
-        console.log(`Enviando requisição da view para /video/${videoId}/view`);
-        await axiosClient.post(`/video/${videoId}/view`);
-      },
-      onSuccess: () => {
-        if (videoId) {
-          queryClient.invalidateQueries({ queryKey: ["video", videoId] });
-        }
-      },
-      onError: (error) => {
-        console.error("Error registering view:", error);
-      },
-    });
-  
-    const handlePlay = async () => {
-      try {
-        await viewMutation.mutateAsync();
-      } catch (error) {
-        console.error("Error registering view:", error);
+  const viewMutation = useMutation({
+    mutationFn: async () => {
+      console.log(`Enviando requisição da view para /video/${videoId}/view`);
+      await axiosClient.post(`/video/${videoId}/view`);
+    },
+    onSuccess: () => {
+      if (videoId) {
+        queryClient.invalidateQueries({ queryKey: ["video", videoId] });
       }
-    };
-  
-    useEffect(() => {
-      const videoElement = videoRef.current;
-      if (videoElement) {
-        videoElement.addEventListener("play", handlePlay);
-        return () => {
-          videoElement.removeEventListener("play", handlePlay);
-        };
-      }
-    }, [videoRef, videoId]);
+    },
+    onError: (error) => {
+      console.error("Error registering view:", error);
+    },
+  });
+
+  const handlePlay = async () => {
+    try {
+      await viewMutation.mutateAsync();
+    } catch (error) {
+      console.error("Error registering view:", error);
+    }
+  };
+
+  useEffect(() => {
+    const videoElement = videoRef.current;
+    if (videoElement) {
+      videoElement.addEventListener("play", handlePlay);
+      return () => {
+        videoElement.removeEventListener("play", handlePlay);
+      };
+    }
+  }, [videoRef, videoId]);
 
   const toggleLike = async () => {
     try {

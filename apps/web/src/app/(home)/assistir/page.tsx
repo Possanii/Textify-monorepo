@@ -2,6 +2,7 @@
 
 import { Toggle } from "@ui/components/ui/toggle";
 import { ThumbsDown, ThumbsUp } from "lucide-react";
+import { useEffect } from "react";
 import {
   H4,
   PSmall,
@@ -9,7 +10,6 @@ import {
 import { ScrollArea } from "../../../../../../packages/ui/src/components/ui/scroll-area";
 import { VideosSection } from "./_components/videosSection/videosSection";
 import { useAssistirController } from "./useAssistirController";
-import { useEffect } from "react";
 
 const WatchVideo: React.FC = () => {
   const {
@@ -24,7 +24,7 @@ const WatchVideo: React.FC = () => {
 
   useEffect(() => {
     if (videoRef.current) {
-      videoRef.current.play().catch(error => {
+      videoRef.current.play().catch((error) => {
         console.error("Erro ao reproduzir video:", error);
       });
     }

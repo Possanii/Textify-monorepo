@@ -20,7 +20,9 @@ export function VideosSection() {
             size={bytesToMegabytes(video.sizeInBytes)}
             date={new Date(video.uploadedAt)}
             url={video.publicURL}
-            onClick={() => router.push(`/assistir?video=${video._id}`)}
+            onClick={() => {
+              router.push(`/assistir?video=${video._id}`);
+            }}
           />
         ))
       ) : (
